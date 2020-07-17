@@ -10,4 +10,8 @@ public class Address {
         this.district = district;
         this.fullAddress = fullAddress;
     }
+
+    public String getFullAddress() {
+        return fullAddress;
+    }
 }
