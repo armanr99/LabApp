@@ -3,7 +3,7 @@ package main.java.Views.CommandLineHandler;
 import main.java.Controllers.RequestExperiment.RequestExperimentController;
 import main.java.Exceptions.NoExperiments;
 import main.java.Exceptions.PatientNotFound;
-import main.java.Models.Experiment.ExperimentInfo;
+import main.java.Models.DTOs.ExperimentInfoDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,15 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
                 int patientId = Integer.parseInt(scanner.next());
 
                 handleLoginPatient(patientId);
-                handleGetExperimentInfos();
+                handleExperimentRequest();
             } catch(Exception exception) {
                 System.out.println("Error: " + exception.toString());
             }
         }
+    }
+
+    private void handleExperimentRequest() throws NoExperiments {
+        List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
     }
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {
@@ -41,35 +45,36 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.loginPatient(patientId, password);
     }
 
-    private void handleGetExperimentInfos() throws NoExperiments {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments {
         System.out.println("Please choose experiments number separated by space:");
 
-        List<ExperimentInfo> experimentInfos = requestExperimentController.getExperimentInfos();
+        List<ExperimentInfoDTO> experimentInfos = requestExperimentController.getExperimentInfos();
         if(experimentInfos.size() == 0) {
             throw new NoExperiments();
         }
 
         printExperimentInfos(experimentInfos);
 
-        List<ExperimentInfo> selectedExperimentInfos = getSelectedExperimentInfos(experimentInfos);
+        List<ExperimentInfoDTO> selectedExperimentInfos = getSelectedExperimentInfos(experimentInfos);
         if(selectedExperimentInfos.size() == 0) {
             System.out.println("You didn't select any experiment");
-            handleGetExperimentInfos();
+            return getSelectedExperimentInfos();
+        } else {
+            return selectedExperimentInfos;
         }
-
     }
 
-    private void printExperimentInfos(List<ExperimentInfo> experimentInfos) {
+    private void printExperimentInfos(List<ExperimentInfoDTO> experimentInfos) {
         for(int i = 0; i < experimentInfos.size(); i++) {
             String lineResult = String.format("%d: %s", i, experimentInfos.get(i).getName());
             System.out.println(lineResult);
         }
     }
 
-    private List<ExperimentInfo> getSelectedExperimentInfos(List<ExperimentInfo> experimentInfos) {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfos(List<ExperimentInfoDTO> experimentInfos) {
         String selectedExperimentsStr = scanner.nextLine();
         String[] splitExperimentsStr = selectedExperimentsStr.split("\\s+");
-        List<ExperimentInfo> selectedExperimentInfos = new ArrayList<>();
+        List<ExperimentInfoDTO> selectedExperimentInfos = new ArrayList<>();
 
         for(String splitExperimentStr : splitExperimentsStr) {
             int experimentIndex = Integer.parseInt(splitExperimentStr);
