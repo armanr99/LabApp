@@ -1,4 +1,6 @@
 package main.java.Views.CommandLineHandler;
 
-public class CommandLineHandler implements CommandLIneHandlerInterface {
+public class CommandLineHandler implements CommandLineHandlerInterface {
+    public void start() {
+    }
 }
