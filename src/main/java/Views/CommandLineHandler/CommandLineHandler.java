@@ -1,10 +1,7 @@
 package main.java.Views.CommandLineHandler;
 
 import main.java.Controllers.RequestExperiment.RequestExperimentController;
-import main.java.Exceptions.NoExperiments;
-import main.java.Exceptions.NoLabs;
-import main.java.Exceptions.PatientNotFound;
-import main.java.Exceptions.WrongIndex;
+import main.java.Exceptions.*;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
 
@@ -27,7 +24,9 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         while (true) {
             try {
                 System.out.print("Please enter your id: ");
-                int patientId = Integer.parseInt(scanner.next());
+                String patientIdStr = scanner.nextLine();
+                validateIntegerStr(patientIdStr);
+                int patientId = Integer.parseInt(patientIdStr);
 
                 handleLoginPatient(patientId);
                 handleExperimentRequest();
@@ -44,7 +43,7 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {
         System.out.print("Please enter your password: ");
-        String password = scanner.next();
+        String password = scanner.nextLine();
 
         requestExperimentController.loginPatient(patientId, password);
     }
@@ -66,26 +65,22 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private List<ExperimentInfoDTO> getSelectedExperimentInfosInput(List<ExperimentInfoDTO> experimentInfoDTOs) {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfosInput(List<ExperimentInfoDTO> experimentInfos) {
         System.out.print("Please choose experiments number separated by space: ");
 
-        List<ExperimentInfoDTO> selectedExperimentInfos = getSelectedExperimentInfos(experimentInfoDTOs);
-        if (selectedExperimentInfos.size() == 0) {
-            System.out.println("You didn't select any experiment");
-            return getSelectedExperimentInfosInput(experimentInfoDTOs);
-        } else {
-            return selectedExperimentInfos;
-        }
-    }
-
-    private List<ExperimentInfoDTO> getSelectedExperimentInfos(List<ExperimentInfoDTO> experimentInfos) {
         String selectedExperimentsStr = scanner.nextLine();
         String[] splitExperimentsStr = selectedExperimentsStr.split("\\s+");
         List<ExperimentInfoDTO> selectedExperimentInfos = new ArrayList<>();
 
-        for (String splitExperimentStr : splitExperimentsStr) {
-            int experimentIndex = Integer.parseInt(splitExperimentStr);
-            selectedExperimentInfos.add(experimentInfos.get(experimentIndex));
+        try {
+            for (String splitExperimentStr : splitExperimentsStr) {
+                validateIntegerStr(splitExperimentStr);
+                int experimentIndex = Integer.parseInt(splitExperimentStr);
+                selectedExperimentInfos.add(experimentInfos.get(experimentIndex));
+            }
+        } catch (WrongIntegerFormat exception) {
+            System.out.println(exception.toString());
+            return getSelectedExperimentInfosInput(experimentInfos);
         }
 
         return selectedExperimentInfos;
@@ -109,17 +104,30 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private LabDTO getSelectedLabInput(List<LabDTO> labDTOs) throws WrongIndex {
+    private LabDTO getSelectedLabInput(List<LabDTO> labDTOs) {
         System.out.print("Please select lab number: ");
+        int labIndex;
 
-        int labIndex = Integer.parseInt(scanner.next());
-        validateIndex(labIndex, labDTOs);
+        try {
+            String labIndexStr = scanner.nextLine();
+            validateIntegerStr(labIndexStr);
+            labIndex = Integer.parseInt(labIndexStr);
+            validateIndex(labIndex, labDTOs);
+        } catch (WrongIndex | WrongIntegerFormat exception) {
+            System.out.println(exception.toString());
+            return getSelectedLabInput(labDTOs);
+        }
 
         return labDTOs.get(labIndex);
     }
 
     private void validateIndex(int objectIndex, List<?> objects) throws WrongIndex {
-        if(objectIndex < 0 || objectIndex >= objects.size())
+        if (objectIndex < 0 || objectIndex >= objects.size())
             throw new WrongIndex();
+    }
+
+    private void validateIntegerStr(String integerStr) throws WrongIntegerFormat {
+        if (!integerStr.matches(("-?\\d+")))
+            throw new WrongIntegerFormat();
     }
 }
