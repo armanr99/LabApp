@@ -55,21 +55,26 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
             throw new NoExperiments();
         }
         printExperimentInfos(experimentInfos);
-        System.out.print("Please choose experiments number separated by space: ");
 
-        List<ExperimentInfoDTO> selectedExperimentInfos = getSelectedExperimentInfos(experimentInfos);
-        if (selectedExperimentInfos.size() == 0) {
-            System.out.println("You didn't select any experiment");
-            return getSelectedExperimentInfos();
-        } else {
-            return selectedExperimentInfos;
-        }
+        return getSelectedExperimentInfosInput(experimentInfos);
     }
 
     private void printExperimentInfos(List<ExperimentInfoDTO> experimentInfos) {
         for (int i = 0; i < experimentInfos.size(); i++) {
             String lineResult = String.format("%d: %s", i, experimentInfos.get(i).getName());
             System.out.println(lineResult);
+        }
+    }
+
+    private List<ExperimentInfoDTO> getSelectedExperimentInfosInput(List<ExperimentInfoDTO> experimentInfoDTOs) {
+        System.out.print("Please choose experiments number separated by space: ");
+
+        List<ExperimentInfoDTO> selectedExperimentInfos = getSelectedExperimentInfos(experimentInfoDTOs);
+        if (selectedExperimentInfos.size() == 0) {
+            System.out.println("You didn't select any experiment");
+            return getSelectedExperimentInfosInput(experimentInfoDTOs);
+        } else {
+            return selectedExperimentInfos;
         }
     }
 
