@@ -1,5 +1,6 @@
 package main.java.Models.LabApp;
 
+import main.java.Exceptions.LabNotFound;
 import main.java.Exceptions.PatientNotFound;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
@@ -8,6 +9,7 @@ import main.java.Models.Lab.Lab;
 import main.java.Models.User.Patient;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class LabApp implements LabAppInterface {
@@ -64,5 +66,19 @@ public class LabApp implements LabAppInterface {
         }
 
         return experimentsLabDTOs;
+    }
+
+    public List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound {
+        Lab lab = getLab(labDTO.getName());
+        return lab.getTimes(experimentInfoDTOs);
+    }
+
+    private Lab getLab(String labName) throws LabNotFound {
+        for (Lab lab : labs) {
+            if (lab.getName().equals(labName)) {
+                return lab;
+            }
+        }
+        throw new LabNotFound(labName);
     }
 }

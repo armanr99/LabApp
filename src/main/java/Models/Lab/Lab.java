@@ -5,6 +5,9 @@ import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
 import main.java.Models.User.Sampler;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Lab {
@@ -53,5 +56,19 @@ public class Lab {
             }
         }
         return false;
+    }
+
+    public List<Date> getTimes(List<ExperimentInfoDTO> experimentInfoDTOs) {
+        List<Date> dates = new ArrayList<>();
+        int numberOfDates = (int) (Math.random() * 10);
+
+        for (int i = 0; i < numberOfDates; i++) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            int hourShift = (int) (Math.random() * 1000);
+            cal.add(Calendar.HOUR_OF_DAY, hourShift);
+            dates.add(cal.getTime());
+        }
+        return dates;
     }
 }
