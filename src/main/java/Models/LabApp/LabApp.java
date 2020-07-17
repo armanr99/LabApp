@@ -1,6 +1,8 @@
 package main.java.Models.LabApp;
 
 import main.java.Exceptions.PatientNotFound;
+import main.java.Models.DTOs.ExperimentInfoDTO;
+import main.java.Models.DTOs.LabDTO;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.Lab.Lab;
 import main.java.Models.User.Patient;
@@ -16,7 +18,7 @@ public class LabApp implements LabAppInterface {
     private List<ExperimentInfo> experimentInfos; //TODO: Use a set and override corresponding methods
 
     public static LabApp getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new LabApp();
         }
         return instance;
@@ -37,15 +39,25 @@ public class LabApp implements LabAppInterface {
     }
 
     private Patient getPatient(int patientId, String password) throws PatientNotFound {
-        for(Patient patient : patients) {
-            if(patient.hasInfo(patientId, password))
+        for (Patient patient : patients) {
+            if (patient.hasInfo(patientId, password))
                 return patient;
         }
         throw new PatientNotFound(patientId);
     }
 
-    public List<ExperimentInfo> getExperimentInfos()
-    {
+    public List<ExperimentInfo> getExperimentInfos() {
         return experimentInfos;
+    }
+
+    public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
+        List<LabDTO> experimentsLabDTOs = new ArrayList<>();
+
+        for (Lab lab : labs) {
+            if(lab.hasSupport(experimentInfoDTOs))
+                experimentsLabDTOs.add(new LabDTO(lab));
+        }
+
+        return experimentsLabDTOs;
     }
 }

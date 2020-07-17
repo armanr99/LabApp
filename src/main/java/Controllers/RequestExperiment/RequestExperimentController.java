@@ -2,6 +2,7 @@ package main.java.Controllers.RequestExperiment;
 
 import main.java.Exceptions.PatientNotFound;
 import main.java.Models.DTOs.ExperimentInfoDTO;
+import main.java.Models.DTOs.LabDTO;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.LabApp.LabApp;
 
@@ -30,12 +31,16 @@ public class RequestExperimentController implements RequestExperimentControllerI
     public List<ExperimentInfoDTO> getExperimentInfos()
     {
         List<ExperimentInfo> experimentInfos = labApp.getExperimentInfos();
-        List<ExperimentInfoDTO> experimentInfoDTOS = new ArrayList<>();
+        List<ExperimentInfoDTO> experimentInfoDTOs = new ArrayList<>();
 
         for(ExperimentInfo experimentInfo : experimentInfos) {
-            experimentInfoDTOS.add(new ExperimentInfoDTO(experimentInfo));
+            experimentInfoDTOs.add(new ExperimentInfoDTO(experimentInfo));
         }
+        return experimentInfoDTOs;
+    }
 
-        return experimentInfoDTOS;
+    public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs)
+    {
+        return labApp.getLabsForExperiments(experimentInfoDTOs);
     }
 }
