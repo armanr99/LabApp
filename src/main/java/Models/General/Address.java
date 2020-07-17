@@ -1,4 +1,4 @@
-package main.java.Models.User;
+package main.java.Models.General;
 
 public class Address {
     private String city;

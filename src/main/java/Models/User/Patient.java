@@ -1,5 +1,7 @@
 package main.java.Models.User;
 
+import main.java.Models.General.Address;
+
 public class Patient extends User {
     private String ssn;
     private Address address;
