@@ -15,7 +15,7 @@ public class LabApp implements LabAppInterface {
     private Patient currentPatient;
     private List<Lab> labs;
     private List<Patient> patients;
-    private List<ExperimentInfo> experimentInfos; //TODO: Use a set and override corresponding methods
+    private List<ExperimentInfo> experimentInfos;
 
     public static LabApp getInstance() {
         if (instance == null) {
@@ -46,15 +46,20 @@ public class LabApp implements LabAppInterface {
         throw new PatientNotFound(patientId);
     }
 
-    public List<ExperimentInfo> getExperimentInfos() {
-        return experimentInfos;
+    public List<ExperimentInfoDTO> getExperimentInfos() {
+        List<ExperimentInfoDTO> experimentInfoDTOS = new ArrayList<>();
+
+        for (ExperimentInfo experimentInfo : experimentInfos) {
+            experimentInfoDTOS.add(new ExperimentInfoDTO(experimentInfo));
+        }
+        return experimentInfoDTOS;
     }
 
     public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
         List<LabDTO> experimentsLabDTOs = new ArrayList<>();
 
         for (Lab lab : labs) {
-            if(lab.hasSupport(experimentInfoDTOs))
+            if (lab.hasSupport(experimentInfoDTOs))
                 experimentsLabDTOs.add(new LabDTO(lab));
         }
 

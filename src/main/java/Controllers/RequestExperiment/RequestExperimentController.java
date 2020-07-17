@@ -3,10 +3,8 @@ package main.java.Controllers.RequestExperiment;
 import main.java.Exceptions.PatientNotFound;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
-import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.LabApp.LabApp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RequestExperimentController implements RequestExperimentControllerInterface {
@@ -14,7 +12,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
     private LabApp labApp;
 
     public static RequestExperimentController getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new RequestExperimentController();
         }
         return instance;
@@ -28,19 +26,11 @@ public class RequestExperimentController implements RequestExperimentControllerI
         labApp.loginPatient(patientId, password);
     }
 
-    public List<ExperimentInfoDTO> getExperimentInfos()
-    {
-        List<ExperimentInfo> experimentInfos = labApp.getExperimentInfos();
-        List<ExperimentInfoDTO> experimentInfoDTOs = new ArrayList<>();
-
-        for(ExperimentInfo experimentInfo : experimentInfos) {
-            experimentInfoDTOs.add(new ExperimentInfoDTO(experimentInfo));
-        }
-        return experimentInfoDTOs;
+    public List<ExperimentInfoDTO> getExperimentInfos() {
+        return labApp.getExperimentInfos();
     }
 
-    public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs)
-    {
+    public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
         return labApp.getLabsForExperiments(experimentInfoDTOs);
     }
 }
