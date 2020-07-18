@@ -43,6 +43,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.setExperiments(selectedExperiments);
 
         LabDTO selectedLab = getSelectedLab(selectedExperiments);
+        requestExperimentController.setLab(selectedLab);
+
         Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
     }
 

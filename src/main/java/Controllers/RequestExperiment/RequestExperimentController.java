@@ -42,4 +42,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
     public List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound {
         return labApp.getTimesForExperiments(labDTO, experimentInfoDTOs);
     }
+
+    public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
+        labApp.setLab(labDTO);
+    }
 }

@@ -117,4 +117,19 @@ public class LabApp {
         }
         throw new ExperimentInfoNotFound();
     }
+
+    public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
+        checkPatientLogin();
+        Lab patientLab = getLab(labDTO);
+        currentPatient.setLab(patientLab);
+    }
+
+    public Lab getLab(LabDTO labDTO) throws LabNotFound {
+        for (Lab lab : labs) {
+            if (lab.getName().equals(labDTO.getName())) {
+                return lab;
+            }
+        }
+        throw new LabNotFound(labDTO.getName());
+    }
 }

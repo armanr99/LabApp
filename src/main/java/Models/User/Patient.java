@@ -4,6 +4,7 @@ import main.java.Exceptions.CurrentExperimentNotInstantiated;
 import main.java.Models.Experiment.Experiment;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
+import main.java.Models.Lab.Lab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,5 +34,10 @@ public class Patient extends User {
     private void checkExperimentInstantiated() throws CurrentExperimentNotInstantiated {
         if (currentExperiment == null)
             throw new CurrentExperimentNotInstantiated();
+    }
+
+    public void setLab(Lab lab) throws CurrentExperimentNotInstantiated {
+        checkExperimentInstantiated();
+        currentExperiment.setLab(lab);
     }
 }
