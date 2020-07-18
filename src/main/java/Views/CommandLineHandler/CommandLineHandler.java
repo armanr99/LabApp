@@ -169,11 +169,15 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
     }
 
     public Object getListIndexInput(List<?> indexObjects) throws WrongIndex, WrongIntegerFormat {
-        String indexStr = scanner.nextLine();
-        validateIntegerStr(indexStr);
-        int indexInteger = Integer.parseInt(indexStr);
+        int indexInteger = getIntegerInput();
         validateIndex(indexInteger, indexObjects);
         return indexObjects.get(indexInteger);
+    }
+
+    public int getIntegerInput() throws WrongIntegerFormat {
+        String inputStr = scanner.nextLine();
+        validateIntegerStr(inputStr);
+        return Integer.parseInt(inputStr);
     }
 
     private void handleInsurance() {
@@ -185,11 +189,27 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         } catch (WrongIntegerFormat exception) {
             System.out.println(exception.toString());
             handleInsurance();
+            return;
         }
 
-        if(answerInput.equals("y")) {
-            //TODO: controller
+        if (answerInput.equals("y")) {
+            handleInsuranceCode();
         }
+    }
+
+    private void handleInsuranceCode() {
+        System.out.println("Please enter your insurance code: ");
+        int insuranceNumber;
+
+        try {
+            insuranceNumber = getIntegerInput();
+        } catch (WrongIntegerFormat exception) {
+            System.out.println(exception.toString());
+            handleInsuranceCode();
+            return;
+        }
+
+        //TODO: controller
     }
 
     private void validateQuestionInput(String inputStr) throws WrongQuestionInputFormat {
