@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class LabApp implements LabAppInterface {
+public class LabApp {
     private static LabApp instance;
     private Patient currentPatient;
     private List<Lab> labs;
