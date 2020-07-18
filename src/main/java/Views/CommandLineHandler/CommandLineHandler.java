@@ -5,7 +5,9 @@ import main.java.Exceptions.*;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,9 +38,10 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, WrongIndex {
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         LabDTO selectedLab = getSelectedLab(selectedExperiments);
+        Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
     }
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {
@@ -86,7 +89,7 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         return selectedExperimentInfos;
     }
 
-    private LabDTO getSelectedLab(List<ExperimentInfoDTO> experimentInfoDTOs) throws NoLabs, WrongIndex {
+    private LabDTO getSelectedLab(List<ExperimentInfoDTO> experimentInfoDTOs) throws NoLabs {
         List<LabDTO> experimentsLabDTOs = requestExperimentController.getLabsForExperiments(experimentInfoDTOs);
         if (experimentsLabDTOs.size() == 0) {
             throw new NoLabs();
@@ -106,19 +109,16 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
 
     private LabDTO getSelectedLabInput(List<LabDTO> labDTOs) {
         System.out.print("Please select lab number: ");
-        int labIndex;
+        LabDTO labDTO;
 
         try {
-            String labIndexStr = scanner.nextLine();
-            validateIntegerStr(labIndexStr);
-            labIndex = Integer.parseInt(labIndexStr);
-            validateIndex(labIndex, labDTOs);
+            labDTO = (LabDTO) getListIndexInput(labDTOs);
         } catch (WrongIndex | WrongIntegerFormat exception) {
             System.out.println(exception.toString());
             return getSelectedLabInput(labDTOs);
         }
 
-        return labDTOs.get(labIndex);
+        return labDTO;
     }
 
     private void validateIndex(int objectIndex, List<?> objects) throws WrongIndex {
@@ -129,5 +129,43 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
     private void validateIntegerStr(String integerStr) throws WrongIntegerFormat {
         if (!integerStr.matches(("-?\\d+")))
             throw new WrongIntegerFormat();
+    }
+
+    private Date getExperimentTime(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOS) throws LabNotFound {
+        List<Date> experimentTimes = requestExperimentController.getTimesForExperiments(labDTO, experimentInfoDTOS);
+        printExperimentTimes(experimentTimes);
+
+        return getSelectedTimeInput(experimentTimes);
+    }
+
+    private void printExperimentTimes(List<Date> experimentTimes) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        for (int i = 0; i < experimentTimes.size(); i++) {
+            String lineResult = String.format("%d: %s", i, dateFormatter.format(experimentTimes.get(i)));
+            System.out.println(lineResult);
+        }
+    }
+
+    public Date getSelectedTimeInput(List<Date> experimentTimes) {
+        System.out.print("Please select time number: ");
+        Date selectedDate;
+
+        try {
+            selectedDate = (Date) getListIndexInput(experimentTimes);
+        } catch (WrongIntegerFormat | WrongIndex exception) {
+            System.out.println(exception.toString());
+            return getSelectedTimeInput(experimentTimes);
+        }
+
+        return selectedDate;
+    }
+
+    public Object getListIndexInput(List<?> indexObjects) throws WrongIndex, WrongIntegerFormat {
+        String indexStr = scanner.nextLine();
+        validateIntegerStr(indexStr);
+        int indexInteger = Integer.parseInt(indexStr);
+        validateIndex(indexInteger, indexObjects);
+        return indexObjects.get(indexInteger);
     }
 }
