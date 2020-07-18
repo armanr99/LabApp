@@ -46,4 +46,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
     public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
         labApp.setLab(labDTO);
     }
+
+    public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        labApp.setTime(experimentTime);
+    }
 }

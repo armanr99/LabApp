@@ -7,6 +7,7 @@ import main.java.Models.General.Address;
 import main.java.Models.Lab.Lab;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Patient extends User {
@@ -36,8 +37,13 @@ public class Patient extends User {
             throw new CurrentExperimentNotInstantiated();
     }
 
-    public void setLab(Lab lab) throws CurrentExperimentNotInstantiated {
+    public void setExperimentLab(Lab lab) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
         currentExperiment.setLab(lab);
+    }
+
+    public void setExperimentTime(Date experimentTime) throws CurrentExperimentNotInstantiated {
+        checkExperimentInstantiated();
+        currentExperiment.setTime(experimentTime);
     }
 }

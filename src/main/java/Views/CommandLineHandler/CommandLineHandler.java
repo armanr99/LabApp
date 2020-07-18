@@ -46,6 +46,7 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.setLab(selectedLab);
 
         Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
+        requestExperimentController.setTime(selectedTime);
     }
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {

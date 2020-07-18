@@ -19,4 +19,6 @@ public interface RequestExperimentControllerInterface {
     void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated;
 
     void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
+
+    void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
 }

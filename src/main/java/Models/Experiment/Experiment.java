@@ -25,7 +25,7 @@ public class Experiment {
         this.sampler = sampler;
     }
 
-    public void setDate(Date date) {
+    public void setTime(Date date) {
         this.date = date;
     }
 

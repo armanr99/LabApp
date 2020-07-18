@@ -121,7 +121,7 @@ public class LabApp {
     public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
         checkPatientLogin();
         Lab patientLab = getLab(labDTO);
-        currentPatient.setLab(patientLab);
+        currentPatient.setExperimentLab(patientLab);
     }
 
     public Lab getLab(LabDTO labDTO) throws LabNotFound {
@@ -131,5 +131,10 @@ public class LabApp {
             }
         }
         throw new LabNotFound(labDTO.getName());
+    }
+
+    public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        checkPatientLogin();
+        currentPatient.setExperimentTime(experimentTime);
     }
 }
