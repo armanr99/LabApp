@@ -180,7 +180,7 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         return Integer.parseInt(inputStr);
     }
 
-    private void handleInsurance() {
+    private void handleInsurance() throws PatientNotLogin, CurrentExperimentNotInstantiated {
         System.out.print("Do you want to use insurance? y/n: ");
         String answerInput = scanner.nextLine();
 
@@ -193,11 +193,16 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
 
         if (answerInput.equals("y")) {
-            handleInsuranceCode();
+            try {
+                handleInsuranceCode();
+            } catch (InvalidInsuranceNumber exception) {
+                System.out.println(exception.toString());
+                handleInsurance();
+            }
         }
     }
 
-    private void handleInsuranceCode() {
+    private void handleInsuranceCode() throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated {
         System.out.println("Please enter your insurance code: ");
         int insuranceNumber;
 
@@ -209,11 +214,6 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
             return;
         }
 
-        //TODO: controller
-    }
-
-    private void validateQuestionInput(String inputStr) throws WrongQuestionInputFormat {
-        if (!inputStr.equals("y") && !inputStr.equals("n"))
-            throw new WrongQuestionInputFormat();
+        requestExperimentController.setInsurance(insuranceNumber);
     }
 }

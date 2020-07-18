@@ -50,4 +50,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
     public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
         labApp.setTime(experimentTime);
     }
+
+    public void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated {
+        labApp.setInsurance(insuranceNumber);
+    }
 }

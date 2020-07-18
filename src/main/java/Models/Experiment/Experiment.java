@@ -11,10 +11,12 @@ public class Experiment {
     private Lab lab;
     private Sampler sampler;
     private Date date;
+    private int insuranceNumber;
     private List<ExperimentInfo> experimentInfos;
 
     public Experiment(int id) {
         this.id = id;
+        this.insuranceNumber = Integer.MAX_VALUE;
     }
 
     public void setLab(Lab lab) {
@@ -31,5 +33,9 @@ public class Experiment {
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
         this.experimentInfos = experimentInfos;
+    }
+
+    public void setInsuranceNumber(int insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
     }
 }

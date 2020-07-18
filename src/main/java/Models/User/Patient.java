@@ -46,4 +46,9 @@ public class Patient extends User {
         checkExperimentInstantiated();
         currentExperiment.setTime(experimentTime);
     }
+
+    public void setExperimentInsuranceNumber(int insuranceNumber) throws CurrentExperimentNotInstantiated {
+        checkExperimentInstantiated();
+        currentExperiment.setInsuranceNumber(insuranceNumber);
+    }
 }

@@ -21,4 +21,6 @@ public interface RequestExperimentControllerInterface {
     void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
 
     void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
+
+    void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated;
 }

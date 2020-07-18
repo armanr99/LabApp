@@ -1,6 +1,7 @@
 package main.java.Models.LabApp;
 
 import main.java.Exceptions.*;
+import main.java.Models.API.InsuranceAPI;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
 import main.java.Models.Experiment.ExperimentInfo;
@@ -136,5 +137,16 @@ public class LabApp {
     public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
         checkPatientLogin();
         currentPatient.setExperimentTime(experimentTime);
+    }
+
+    public void setInsurance(int insuranceNumber) throws InvalidInsuranceNumber, PatientNotLogin, CurrentExperimentNotInstantiated {
+        checkPatientLogin();
+        validateInsuranceNumber(insuranceNumber);
+        currentPatient.setExperimentInsuranceNumber(insuranceNumber);
+    }
+
+    private void validateInsuranceNumber(int insuranceNumber) throws InvalidInsuranceNumber {
+        if (!InsuranceAPI.getInstance().isValidInsuranceNumber(insuranceNumber))
+            throw new InvalidInsuranceNumber();
     }
 }
