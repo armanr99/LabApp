@@ -47,6 +47,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
 
         Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
         requestExperimentController.setTime(selectedTime);
+
+        handleInsurance();
     }
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {
@@ -172,5 +174,26 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         int indexInteger = Integer.parseInt(indexStr);
         validateIndex(indexInteger, indexObjects);
         return indexObjects.get(indexInteger);
+    }
+
+    private void handleInsurance() {
+        System.out.print("Do you want to use insurance? y/n: ");
+        String answerInput = scanner.nextLine();
+
+        try {
+            validateIntegerStr(answerInput);
+        } catch (WrongIntegerFormat exception) {
+            System.out.println(exception.toString());
+            handleInsurance();
+        }
+
+        if(answerInput.equals("y")) {
+            //TODO: controller
+        }
+    }
+
+    private void validateQuestionInput(String inputStr) throws WrongQuestionInputFormat {
+        if (!inputStr.equals("y") && !inputStr.equals("n"))
+            throw new WrongQuestionInputFormat();
     }
 }
