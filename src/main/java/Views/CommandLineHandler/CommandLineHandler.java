@@ -38,8 +38,10 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound {
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
+        requestExperimentController.setExperiments(selectedExperiments);
+
         LabDTO selectedLab = getSelectedLab(selectedExperiments);
         Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
     }

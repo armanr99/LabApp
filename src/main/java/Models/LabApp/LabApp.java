@@ -1,10 +1,10 @@
 package main.java.Models.LabApp;
 
-import main.java.Exceptions.LabNotFound;
-import main.java.Exceptions.PatientNotFound;
+import main.java.Exceptions.*;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
 import main.java.Models.Experiment.ExperimentInfo;
+import main.java.Models.Handler.IdHandler;
 import main.java.Models.Lab.Lab;
 import main.java.Models.User.Patient;
 
@@ -18,6 +18,7 @@ public class LabApp implements LabAppInterface {
     private List<Lab> labs;
     private List<Patient> patients;
     private List<ExperimentInfo> experimentInfos;
+    private IdHandler idHandler;
 
     public static LabApp getInstance() {
         if (instance == null) {
@@ -34,6 +35,7 @@ public class LabApp implements LabAppInterface {
         labs = new ArrayList<>();
         patients = new ArrayList<>();
         experimentInfos = new ArrayList<>();
+        idHandler = new IdHandler();
     }
 
     public void loginPatient(int patientId, String password) throws PatientNotFound {
@@ -80,5 +82,39 @@ public class LabApp implements LabAppInterface {
             }
         }
         throw new LabNotFound(labName);
+    }
+
+    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin, ExperimentInfoNotFound, CurrentExperimentNotInstantiated {
+        createNewExperiment();
+        List<ExperimentInfo> patientExperimentInfos = getExperimentInfos(experimentInfoDTOs);
+        currentPatient.setExperimentInfos(patientExperimentInfos);
+    }
+
+    public void createNewExperiment() throws PatientNotLogin {
+        checkPatientLogin();
+        currentPatient.createNewExperiment(idHandler.getNextExperimentId());
+    }
+
+    public void checkPatientLogin() throws PatientNotLogin {
+        if (currentPatient == null)
+            throw new PatientNotLogin();
+    }
+
+    private List<ExperimentInfo> getExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOS) throws ExperimentInfoNotFound {
+        List<ExperimentInfo> matchedExperimentInfos = new ArrayList<>();
+
+        for (ExperimentInfoDTO experimentInfoDTO : experimentInfoDTOS) {
+            matchedExperimentInfos.add(getExperimentInfo(experimentInfoDTO));
+        }
+        return matchedExperimentInfos;
+    }
+
+    private ExperimentInfo getExperimentInfo(ExperimentInfoDTO experimentInfoDTO) throws ExperimentInfoNotFound {
+        for (ExperimentInfo experimentInfo : experimentInfos) {
+            if (experimentInfo.getName().equals(experimentInfoDTO.getName())) {
+                return experimentInfo;
+            }
+        }
+        throw new ExperimentInfoNotFound();
     }
 }

@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 public class Experiment {
-    private String id;
+    private int id;
     private Lab lab;
     private Sampler sampler;
     private Date date;
     private List<ExperimentInfo> experimentInfos;
 
-    public Experiment(String id) {
+    public Experiment(int id) {
         this.id = id;
     }
 

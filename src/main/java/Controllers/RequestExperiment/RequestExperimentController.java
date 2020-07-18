@@ -1,7 +1,6 @@
 package main.java.Controllers.RequestExperiment;
 
-import main.java.Exceptions.LabNotFound;
-import main.java.Exceptions.PatientNotFound;
+import main.java.Exceptions.*;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.DTOs.LabDTO;
 import main.java.Models.LabApp.LabApp;
@@ -30,6 +29,10 @@ public class RequestExperimentController implements RequestExperimentControllerI
 
     public List<ExperimentInfoDTO> getExperimentInfos() {
         return labApp.getExperimentInfos();
+    }
+
+    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated {
+        labApp.setExperiments(experimentInfoDTOs);
     }
 
     public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
