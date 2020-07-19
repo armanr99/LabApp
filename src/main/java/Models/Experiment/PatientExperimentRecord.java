@@ -90,7 +90,8 @@ public class PatientExperimentRecord extends ExperimentRecord {
     public void informLab(Patient patient) throws NoLabAssigned, SamplerNotAssigned {
         checkLabAssigned();
         checkSamplerAssigned();
-        lab.addExperimentRecord(patient, this);
+        LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, this);
+        lab.addExperimentRecord(labExperimentRecord);
     }
 
     private void checkLabAssigned() throws NoLabAssigned {

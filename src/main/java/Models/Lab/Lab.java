@@ -86,8 +86,7 @@ public class Lab {
         }
     }
 
-    public void addExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
-        LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, patientExperimentRecord);
+    public void addExperimentRecord(LabExperimentRecord labExperimentRecord) {
         experimentRecords.add(labExperimentRecord);
     }
 }
