@@ -223,39 +223,24 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
     }
 
     private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated {
-        double totalCost = requestExperimentController.getTotalCost();
-        System.out.println(String.format("Your total cost is: %f", totalCost));
+        double totalPrice = requestExperimentController.getTotalPrice();
+        System.out.println(String.format("Your total price is: %f", totalPrice));
+
         handlePayInput();
     }
 
-    private void handlePayInput(double totalCost) {
-        System.out.print("Please re-enter your total cost to pay!: ");
-        double totalCostInput;
+    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        System.out.print("Please enter your bank user session id: ");
+        String bandSessionId = scanner.nextLine();
 
         try {
-            totalCostInput = getDoubleInput();
-            if (totalCostInput != totalCost)
-                throw new WrongTotalCostInput();
-        } catch (WrongDoubleFormat | WrongTotalCostInput exception) {
+            requestExperimentController.payTotalPrice(bandSessionId);
+        } catch (UnsuccessfulPayment exception) {
             System.out.println(exception.toString());
-            handlePayInput(totalCost);
+            handlePay();
             return;
         }
 
-        //TODO
-    }
-
-    public double getDoubleInput() throws WrongDoubleFormat {
-        String inputStr = scanner.nextLine();
-        validateDoubleStr(inputStr);
-        return Double.parseDouble(inputStr);
-    }
-
-    private void validateDoubleStr(String doubleStr) throws WrongDoubleFormat {
-        try {
-            Double.parseDouble(doubleStr);
-        } catch (NumberFormatException exception) {
-            throw new WrongDoubleFormat();
-        }
+        System.out.println("Your payment was successful");
     }
 }
