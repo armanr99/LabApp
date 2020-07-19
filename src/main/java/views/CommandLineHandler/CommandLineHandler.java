@@ -271,5 +271,6 @@ public class CommandLineHandler {
         }
 
         System.out.println("Your payment was successful");
+        System.out.println("Experiment request is successfully submitted");
     }
 }

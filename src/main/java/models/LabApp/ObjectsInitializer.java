@@ -3,8 +3,10 @@ package main.java.models.LabApp;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.General.Address;
 import main.java.models.Lab.Lab;
+import main.java.models.Storage.SamplerRepository;
 import main.java.models.Storage.Storage;
 import main.java.models.User.Patient;
+import main.java.models.User.Sampler;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class ObjectsInitializer {
         addPatients();
         addLabs();
         addExperimentInfos();
+        addSamplers();
     }
 
     private void addPatients() throws InvalidObjectException {
@@ -62,5 +65,15 @@ public class ObjectsInitializer {
         lab2ExperimentInfos.add(experimentInfo1);
         Lab lab2 = storage.getLabRepository().find(1);
         lab2.setExperimentInfos(lab2ExperimentInfos);
+    }
+
+    public void addSamplers() throws InvalidObjectException {
+        Sampler sampler = new Sampler(0, "Sampler 1", "sampler1@gmail.com", "123");
+        storage.getSamplerRepository().insert(sampler);
+
+        ArrayList<Sampler> lab1Samplers = new ArrayList<>();
+        lab1Samplers.add(sampler);
+        Lab lab1 = storage.getLabRepository().find(0);
+        lab1.setSamplers(lab1Samplers);
     }
 }
