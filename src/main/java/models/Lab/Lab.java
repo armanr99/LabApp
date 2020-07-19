@@ -1,7 +1,6 @@
 package main.java.models.Lab;
 
 import main.java.exceptions.SamplerNotAvailable;
-import main.java.models.DTO.ExperimentInfoDTO;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Experiment.LabExperimentRecord;
 import main.java.models.General.Address;
@@ -46,24 +45,24 @@ public class Lab extends ContainerEntity {
         return address.getFullAddress();
     }
 
-    public boolean hasSupport(List<ExperimentInfoDTO> experimentInfoDTOs) {
-        for (ExperimentInfoDTO experimentInfoDTO : experimentInfoDTOs) {
-            if (!hasSupport(experimentInfoDTO))
+    public boolean hasSupport(List<ExperimentInfo> inExperimentInfos) {
+        for (ExperimentInfo inExperimentInfo : inExperimentInfos) {
+            if (!hasSupport(inExperimentInfo))
                 return false;
         }
         return true;
     }
 
-    private boolean hasSupport(ExperimentInfoDTO experimentInfoDTO) {
+    private boolean hasSupport(ExperimentInfo inExperimentInfo) {
         for (ExperimentInfo experimentInfo : experimentInfos) {
-            if (experimentInfo.getName().equals(experimentInfoDTO.getName())) {
+            if (experimentInfo.equals(inExperimentInfo)) {
                 return true;
             }
         }
         return false;
     }
 
-    public List<Date> getTimes(List<ExperimentInfoDTO> experimentInfoDTOs) {
+    public List<Date> getTimes(List<ExperimentInfo> inExperimentInfos) {
         List<Date> dates = new ArrayList<>();
         int numberOfDates = (int) (Math.random() * 10);
 

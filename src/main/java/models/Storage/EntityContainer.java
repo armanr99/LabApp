@@ -2,8 +2,7 @@ package main.java.models.Storage;
 
 
 import java.io.InvalidObjectException;
-import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public abstract class EntityContainer<T extends ContainerEntity> {
     private HashMap<Integer, T> records;
@@ -35,5 +34,9 @@ public abstract class EntityContainer<T extends ContainerEntity> {
         int recordId = getNextId();
         newRecord.setId(recordId);
         records.put(recordId, newRecord);
+    }
+
+    public List<T> getAll() {
+        return new ArrayList<>(records.values());
     }
 }

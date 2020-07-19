@@ -2,7 +2,11 @@ package main.java.controllers.RequestExperiment;
 
 import main.java.exceptions.*;
 import main.java.models.DTO.ExperimentInfoDTO;
+import main.java.models.DTO.ExperimentInfoDTOMapper;
 import main.java.models.DTO.LabDTO;
+import main.java.models.DTO.LabDTOMapper;
+import main.java.models.Experiment.ExperimentInfo;
+import main.java.models.Lab.Lab;
 import main.java.models.LabApp.LabApp;
 
 import java.util.Date;
@@ -11,6 +15,8 @@ import java.util.List;
 public class RequestExperimentController implements RequestExperimentControllerInterface {
     private static RequestExperimentController instance;
     private LabApp labApp;
+    private LabDTOMapper labDTOMapper;
+    private ExperimentInfoDTOMapper experimentInfoDTOMapper;
 
     public static RequestExperimentController getInstance() {
         if (instance == null) {
@@ -21,6 +27,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
 
     private RequestExperimentController() {
         labApp = LabApp.getInstance();
+        labDTOMapper = new LabDTOMapper();
+        experimentInfoDTOMapper = new ExperimentInfoDTOMapper();
     }
 
     public void loginPatient(int patientId, String password) throws PatientNotFound {
@@ -28,24 +36,31 @@ public class RequestExperimentController implements RequestExperimentControllerI
     }
 
     public List<ExperimentInfoDTO> getExperimentInfos() {
-        return labApp.getExperimentInfos();
+        List<ExperimentInfo> experimentInfos = labApp.getExperimentInfos();
+        return experimentInfoDTOMapper.getExperimentInfoDTOs(experimentInfos);
     }
 
-    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound,
-            PatientNotLogin, CurrentExperimentNotInstantiated {
-        labApp.setExperiments(experimentInfoDTOs);
+    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin,
+            CurrentExperimentNotInstantiated {
+        List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
+        labApp.setExperiments(experimentInfos);
     }
 
     public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
-        return labApp.getLabsForExperiments(experimentInfoDTOs);
+        List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
+        List<Lab> labs = labApp.getLabsForExperiments(experimentInfos);
+        return labDTOMapper.getLabDTOs(labs);
     }
 
     public List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound {
-        return labApp.getTimesForExperiments(labDTO, experimentInfoDTOs);
+        Lab lab = labDTOMapper.getLab(labDTO);
+        List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
+        return labApp.getTimesForExperiments(lab, experimentInfos);
     }
 
     public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
-        labApp.setLab(labDTO);
+        Lab lab = labDTOMapper.getLab(labDTO);
+        labApp.setLab(lab);
     }
 
     public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {

@@ -14,7 +14,7 @@ public class User extends ContainerEntity {
         this.password = password;
     }
 
-    public boolean hasInfo(int id, String password) {
-        return (this.id == id && this.password.equals(password));
+    public boolean hasPassword(String password) {
+        return (this.password.equals(password));
     }
 }
