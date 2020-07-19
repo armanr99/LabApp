@@ -1,6 +1,5 @@
 package main.java.Models.User;
 
-import main.java.Models.Experiment.PatientExperimentRecord;
 import main.java.Models.Experiment.SamplerExperimentRecord;
 
 import java.util.ArrayList;
@@ -14,8 +13,7 @@ public class Sampler extends User {
         experimentRecords = new ArrayList<>();
     }
 
-    public void addExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
-        SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, patientExperimentRecord);
+    public void addExperimentRecord(SamplerExperimentRecord samplerExperimentRecord) {
         experimentRecords.add(samplerExperimentRecord);
     }
 }
