@@ -67,7 +67,7 @@ public class CommandLineHandler {
 
     private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments, PatientNotLogin {
         List<ExperimentInfoDTO> experimentInfos = requestExperimentController.getExperimentInfos();
-        if (experimentInfos.size() == 0) {
+        if (experimentInfos.isEmpty()) {
             throw new NoExperiments();
         }
         printExperimentInfos(experimentInfos);
@@ -111,7 +111,7 @@ public class CommandLineHandler {
 
     private LabDTO getSelectedLab() throws NoLabs, PatientNotLogin, CurrentExperimentNotInstantiated {
         List<LabDTO> experimentsLabDTOs = requestExperimentController.getExperimentLabs();
-        if (experimentsLabDTOs.size() == 0) {
+        if (experimentsLabDTOs.isEmpty()) {
             throw new NoLabs();
         }
         printLabInfos(experimentsLabDTOs);
@@ -163,7 +163,7 @@ public class CommandLineHandler {
     private Date getExperimentTime() throws NoLabAssigned,
             PatientNotLogin, CurrentExperimentNotInstantiated, NoTime {
         List<Date> experimentTimes = requestExperimentController.getExperimentTimes();
-        if (experimentTimes.size() == 0) {
+        if (experimentTimes.isEmpty()) {
             throw new NoTime();
         }
         printExperimentTimes(experimentTimes);
@@ -172,7 +172,7 @@ public class CommandLineHandler {
     }
 
     private void printExperimentTimes(List<Date> experimentTimes) {
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         for (int i = 0; i < experimentTimes.size(); i++) {
             String lineResult = String.format("%d: %s", i, dateFormatter.format(experimentTimes.get(i)));
