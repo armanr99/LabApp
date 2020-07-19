@@ -82,7 +82,7 @@ public class PatientExperimentRecord extends ExperimentRecord {
         checkLabAssigned();
         checkSamplerAssigned();
         SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, this);
-        Storage.getInstance().getExperimentRecordRepository().insert(samplerExperimentRecord);
+        Storage.getInstance().getSamplerExperimentRecordRepository().insert(samplerExperimentRecord);
         sampler.addExperimentRecord(samplerExperimentRecord);
     }
 
@@ -96,7 +96,7 @@ public class PatientExperimentRecord extends ExperimentRecord {
         checkLabAssigned();
         checkSamplerAssigned();
         LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, this);
-        Storage.getInstance().getExperimentRecordRepository().insert(labExperimentRecord);
+        Storage.getInstance().getLabExperimentRecordRepository().insert(labExperimentRecord);
         lab.addExperimentRecord(labExperimentRecord);
     }
 

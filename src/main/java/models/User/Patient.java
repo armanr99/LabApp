@@ -27,7 +27,7 @@ public class Patient extends User {
 
     public void createNewExperimentRecord() throws InvalidObjectException {
         currentPatientExperimentRecord = new PatientExperimentRecord();
-        Storage.getInstance().getExperimentRecordRepository().insert(currentPatientExperimentRecord);
+        Storage.getInstance().getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws CurrentExperimentNotInstantiated {

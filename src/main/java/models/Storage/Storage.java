@@ -6,7 +6,9 @@ public class Storage {
     private PatientRepository patientRepository;
     private SamplerRepository samplerRepository;
     private ExperimentInfoRepository experimentInfoRepository;
-    private ExperimentRecordRepository experimentRecordRepository;
+    private PatientExperimentRecordRepository patientExperimentRecordRepository;
+    private SamplerExperimentRecordRepository samplerExperimentRecordRepository;
+    private LabExperimentRecordRepository labExperimentRecordRepository;
 
     public static Storage getInstance() {
         if (instance == null) {
@@ -20,7 +22,9 @@ public class Storage {
         patientRepository = new PatientRepository();
         samplerRepository = new SamplerRepository();
         experimentInfoRepository = new ExperimentInfoRepository();
-        experimentRecordRepository = new ExperimentRecordRepository();
+        patientExperimentRecordRepository = new PatientExperimentRecordRepository();
+        samplerExperimentRecordRepository = new SamplerExperimentRecordRepository();
+        labExperimentRecordRepository = new LabExperimentRecordRepository();
     }
 
     public LabRepository getLabRepository() {
@@ -35,11 +39,19 @@ public class Storage {
         return experimentInfoRepository;
     }
 
-    public ExperimentRecordRepository getExperimentRecordRepository() {
-        return experimentRecordRepository;
-    }
-
     public SamplerRepository getSamplerRepository() {
         return samplerRepository;
+    }
+
+    public PatientExperimentRecordRepository getPatientExperimentRecordRepository() {
+        return patientExperimentRecordRepository;
+    }
+
+    public SamplerExperimentRecordRepository getSamplerExperimentRecordRepository() {
+        return samplerExperimentRecordRepository;
+    }
+
+    public LabExperimentRecordRepository getLabExperimentRecordRepository() {
+        return labExperimentRecordRepository;
     }
 }
