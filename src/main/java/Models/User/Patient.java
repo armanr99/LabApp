@@ -1,6 +1,7 @@
 package main.java.Models.User;
 
 import main.java.Exceptions.CurrentExperimentNotInstantiated;
+import main.java.Exceptions.UnsuccessfulPayment;
 import main.java.Models.Experiment.Experiment;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
@@ -52,8 +53,13 @@ public class Patient extends User {
         currentExperiment.setInsuranceNumber(insuranceNumber);
     }
 
-    public double getExperimentTotalCost() throws CurrentExperimentNotInstantiated {
+    public double getExperimentTotalPrice() throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        return currentExperiment.getTotalCost();
+        return currentExperiment.getTotalPrice();
+    }
+
+    public void payTotalPrice(String bankSessionId) throws CurrentExperimentNotInstantiated, UnsuccessfulPayment {
+        checkExperimentInstantiated();
+        currentExperiment.payTotalPrice(bankSessionId);
     }
 }

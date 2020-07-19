@@ -55,7 +55,11 @@ public class RequestExperimentController implements RequestExperimentControllerI
         labApp.setInsurance(insuranceNumber);
     }
 
-    public double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated {
-        return labApp.getTotalCost();
+    public double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        return labApp.getTotalPrice();
+    }
+
+    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment {
+        labApp.payTotalPrice(bandSessionId);
     }
 }

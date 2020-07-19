@@ -150,8 +150,13 @@ public class LabApp {
             throw new InvalidInsuranceNumber();
     }
 
-    public double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+    public double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
         checkPatientLogin();
-        return currentPatient.getExperimentTotalCost();
+        return currentPatient.getExperimentTotalPrice();
+    }
+
+    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment {
+        checkPatientLogin();
+        currentPatient.payTotalPrice(bankSessionId);
     }
 }

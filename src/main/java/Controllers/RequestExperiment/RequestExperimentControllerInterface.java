@@ -24,5 +24,7 @@ public interface RequestExperimentControllerInterface {
 
     void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated;
 
-    double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
+
+    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment;
 }

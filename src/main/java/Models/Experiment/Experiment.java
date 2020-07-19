@@ -1,6 +1,9 @@
 package main.java.Models.Experiment;
 
+import main.java.Exceptions.UnsuccessfulPayment;
+import main.java.Models.API.BankAPI;
 import main.java.Models.API.InsuranceAPI;
+import main.java.Models.General.Payment;
 import main.java.Models.Lab.Lab;
 import main.java.Models.User.Sampler;
 
@@ -14,6 +17,7 @@ public class Experiment {
     private Date date;
     private int insuranceNumber;
     private List<ExperimentInfo> experimentInfos;
+    private Payment payment;
 
     public Experiment(int id) {
         this.id = id;
@@ -40,30 +44,35 @@ public class Experiment {
         this.insuranceNumber = insuranceNumber;
     }
 
-    public double getTotalCost() {
-        double totalCost = getPureCost();
-        totalCost = getCostWithInsurance(totalCost);
-        return totalCost;
+    public double getTotalPrice() {
+        double totalPrice = getPurePrice();
+        totalPrice = getPriceWithInsurance(totalPrice);
+        return totalPrice;
     }
 
-    private double getPureCost() {
-        double totalCost = 0;
+    private double getPurePrice() {
+        double totalPrice = 0;
 
         for (ExperimentInfo experimentInfo : experimentInfos) {
-            totalCost += experimentInfo.getPrice();
+            totalPrice += experimentInfo.getPrice();
         }
-        return totalCost;
+        return totalPrice;
     }
 
-    private double getCostWithInsurance(double totalCost) {
+    private double getPriceWithInsurance(double totalPrice) {
         if (hasInsurance()) {
             double insurancePercentage = InsuranceAPI.getInstance().getInsurancePercentage(insuranceNumber);
-            totalCost = Double.max(0, totalCost - (totalCost * insurancePercentage));
+            totalPrice = Double.max(0, totalPrice - (totalPrice * insurancePercentage));
         }
-        return totalCost;
+        return totalPrice;
     }
 
     private boolean hasInsurance() {
         return (insuranceNumber != Integer.MAX_VALUE);
+    }
+
+    public void payTotalPrice(String bankSessionId) throws UnsuccessfulPayment {
+        double totalPrice = getTotalPrice();
+        payment = BankAPI.getInstance().pay(bankSessionId, totalPrice);
     }
 }
