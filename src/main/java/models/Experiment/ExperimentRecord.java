@@ -2,6 +2,7 @@ package main.java.models.Experiment;
 
 import main.java.models.General.Entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public abstract class ExperimentRecord extends Entity {
 
     public ExperimentRecord() {
         super();
+        experimentInfos = new ArrayList<>();
     }
 
     public ExperimentRecord(Date date, List<ExperimentInfo> experimentInfos) {

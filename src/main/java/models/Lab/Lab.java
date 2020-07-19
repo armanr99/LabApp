@@ -23,6 +23,9 @@ public class Lab extends Entity {
         super(id);
         this.name = name;
         this.address = address;
+        this.samplers = new ArrayList<>();
+        this.experimentInfos = new ArrayList<>();
+        this.experimentRecords = new ArrayList<>();
     }
 
     public void setSamplers(List<Sampler> samplers) {
