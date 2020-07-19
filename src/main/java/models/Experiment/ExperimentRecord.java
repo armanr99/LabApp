@@ -1,6 +1,6 @@
 package main.java.models.Experiment;
 
-import main.java.models.General.Entity;
+import main.java.models.Entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Date;

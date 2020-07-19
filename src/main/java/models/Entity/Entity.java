@@ -1,4 +1,4 @@
-package main.java.models.General;
+package main.java.models.Entity;
 
 public abstract class Entity {
     protected Integer id;

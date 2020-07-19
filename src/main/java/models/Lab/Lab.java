@@ -4,7 +4,7 @@ import main.java.exceptions.SamplerNotAvailable;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Experiment.LabExperimentRecord;
 import main.java.models.General.Address;
-import main.java.models.General.Entity;
+import main.java.models.Entity.Entity;
 import main.java.models.User.Sampler;
 
 import java.util.ArrayList;

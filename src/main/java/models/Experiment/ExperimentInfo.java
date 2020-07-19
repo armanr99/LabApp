@@ -1,6 +1,6 @@
 package main.java.models.Experiment;
 
-import main.java.models.General.Entity;
+import main.java.models.Entity.Entity;
 
 public class ExperimentInfo extends Entity {
     private String name;

@@ -1,6 +1,6 @@
 package main.java.models.User;
 
-import main.java.models.General.Entity;
+import main.java.models.Entity.Entity;
 
 public class User extends Entity {
     private String name;

@@ -1,6 +1,6 @@
 package main.java.models.Storage;
 
-import main.java.models.General.Entity;
+import main.java.models.Entity.Entity;
 
 import java.io.InvalidObjectException;
 import java.util.*;
