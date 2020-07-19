@@ -25,15 +25,8 @@ public class CommandLineHandler {
 
         while (true) {
             try {
-                System.out.print("Please enter your id: ");
-
-                String patientIdStr = scanner.nextLine();
-                validateIntegerStr(patientIdStr);
-                int patientId = Integer.parseInt(patientIdStr);
-
-                handleLoginPatient(patientId);
+                handleLoginPatient();
                 handleExperimentRequest();
-
                 requestExperimentController.logoutPatient();
             } catch (Exception exception) {
                 System.out.println("Error: " + exception.toString());
@@ -42,27 +35,31 @@ public class CommandLineHandler {
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound,
-            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
-        List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
-        requestExperimentController.setExperimentInfos(selectedExperiments);
+    private void handleLoginPatient() throws PatientNotFound, WrongIntegerFormat {
+        System.out.print("Please enter your id: ");
 
-        LabDTO selectedLab = getSelectedLab();
-        requestExperimentController.setExperimentLab(selectedLab);
+        String patientIdStr = scanner.nextLine();
+        validateIntegerStr(patientIdStr);
+        int patientId = Integer.parseInt(patientIdStr);
 
-        Date selectedTime = getExperimentTime();
-        requestExperimentController.setExperimentTime(selectedTime);
-
-        handleInsurance();
-
-        handlePay();
-    }
-
-    private void handleLoginPatient(int patientId) throws PatientNotFound {
         System.out.print("Please enter your password: ");
         String password = scanner.nextLine();
 
         requestExperimentController.loginPatient(patientId, password);
+    }
+
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound,
+            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+        handleSelectExperiments();
+        handleSelectLab();
+        handleSelectTime();
+        handleInsurance();
+        handlePay();
+    }
+
+    private void handleSelectExperiments() throws PatientNotLogin, CurrentExperimentNotInstantiated, NoExperiments {
+        List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
+        requestExperimentController.setExperimentInfos(selectedExperiments);
     }
 
     private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments, PatientNotLogin {
@@ -101,6 +98,11 @@ public class CommandLineHandler {
         }
 
         return selectedExperimentInfos;
+    }
+
+    private void handleSelectLab() throws PatientNotLogin, NoLabs, CurrentExperimentNotInstantiated, LabNotFound {
+        LabDTO selectedLab = getSelectedLab();
+        requestExperimentController.setExperimentLab(selectedLab);
     }
 
     private LabDTO getSelectedLab() throws NoLabs, PatientNotLogin, CurrentExperimentNotInstantiated {
@@ -147,6 +149,11 @@ public class CommandLineHandler {
         } catch (NumberFormatException exception) {
             throw new WrongIntegerFormat();
         }
+    }
+
+    private void handleSelectTime() throws NoLabAssigned, PatientNotLogin, CurrentExperimentNotInstantiated {
+        Date selectedTime = getExperimentTime();
+        requestExperimentController.setExperimentTime(selectedTime);
     }
 
     private Date getExperimentTime() throws NoLabAssigned,
