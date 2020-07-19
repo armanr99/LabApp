@@ -59,7 +59,7 @@ public class ObjectsInitializer {
         lab1.setExperimentInfos(lab1ExperimentInfos);
 
         ArrayList<ExperimentInfo> lab2ExperimentInfos = new ArrayList<>();
-        lab1ExperimentInfos.add(experimentInfo1);
+        lab2ExperimentInfos.add(experimentInfo1);
         Lab lab2 = storage.getLabRepository().find(1);
         lab2.setExperimentInfos(lab2ExperimentInfos);
     }
