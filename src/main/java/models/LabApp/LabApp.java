@@ -42,11 +42,31 @@ public class LabApp {
         }
     }
 
-    public List<ExperimentInfo> getExperimentInfos() {
+    public void checkPatientLogin() throws PatientNotLogin {
+        if (currentPatient == null)
+            throw new PatientNotLogin();
+    }
+
+    public void createNewExperiment() throws PatientNotLogin {
+        checkPatientLogin();
+        currentPatient.createNewExperiment(getNextExperimentId());
+    }
+
+    public List<ExperimentInfo> getExperimentInfos() throws PatientNotLogin {
+        checkPatientLogin();
         return storage.getExperimentInfoContainer().getAll();
     }
 
-    public List<Lab> getLabsForExperiments(List<ExperimentInfo> experimentInfos) {
+    public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws PatientNotLogin,
+            CurrentExperimentNotInstantiated {
+        createNewExperiment();
+        currentPatient.setExperimentInfos(experimentInfos);
+    }
+
+    public List<Lab> getExperimentLabs() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        checkPatientLogin();
+
+        List<ExperimentInfo> experimentInfos = currentPatient.getExperimentInfos();
         List<Lab> experimentsLabs = new ArrayList<>();
 
         for (Lab lab : Storage.getInstance().getLabContainer().getAll()) {
@@ -57,37 +77,22 @@ public class LabApp {
         return experimentsLabs;
     }
 
-    public List<Date> getTimesForExperiments(Lab lab, List<ExperimentInfo> experimentInfoDTOs) {
-        return lab.getTimes(experimentInfoDTOs);
-    }
-
-    public void setExperiments(List<ExperimentInfo> experimentInfos) throws PatientNotLogin,
-            CurrentExperimentNotInstantiated {
-        createNewExperiment();
-        currentPatient.setExperimentInfos(experimentInfos);
-    }
-
-    public void createNewExperiment() throws PatientNotLogin {
-        checkPatientLogin();
-        currentPatient.createNewExperiment(getNextExperimentId());
-    }
-
-    public void checkPatientLogin() throws PatientNotLogin {
-        if (currentPatient == null)
-            throw new PatientNotLogin();
-    }
-
-    public void setLab(Lab lab) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
+    public void setExperimentLab(Lab lab) throws PatientNotLogin, CurrentExperimentNotInstantiated {
         checkPatientLogin();
         currentPatient.setExperimentLab(lab);
     }
 
-    public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
+    public List<Date> getExperimentTimes() throws PatientNotLogin, CurrentExperimentNotInstantiated, NoLabAssigned {
+        checkPatientLogin();
+        return currentPatient.getExperimentTimes();
+    }
+
+    public void setExperimentTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
         checkPatientLogin();
         currentPatient.setExperimentTime(experimentTime);
     }
 
-    public void setInsurance(int insuranceNumber) throws InvalidInsuranceNumber, PatientNotLogin,
+    public void setExperimentInsurance(int insuranceNumber) throws InvalidInsuranceNumber, PatientNotLogin,
             CurrentExperimentNotInstantiated {
         checkPatientLogin();
         validateInsuranceNumber(insuranceNumber);
@@ -99,12 +104,12 @@ public class LabApp {
             throw new InvalidInsuranceNumber();
     }
 
-    public double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+    public double getExperimentTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
         checkPatientLogin();
         return currentPatient.getExperimentTotalPrice();
     }
 
-    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+    public void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
             UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         checkPatientLogin();
         currentPatient.payTotalPrice(bankSessionId);

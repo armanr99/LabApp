@@ -10,24 +10,24 @@ import java.util.List;
 public interface RequestExperimentControllerInterface {
     void loginPatient(int patientId, String password) throws PatientNotFound;
 
-    List<ExperimentInfoDTO> getExperimentInfos();
+    List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLogin;
 
-    List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs);
-
-    List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound;
-
-    void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin,
+    void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin,
             CurrentExperimentNotInstantiated;
 
-    void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
+    List<LabDTO> getExperimentLabs() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
-    void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    void setExperimentLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
 
-    void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
+    List<Date> getExperimentTimes() throws LabNotFound, NoLabAssigned, PatientNotLogin, CurrentExperimentNotInstantiated;
+
+    void setExperimentTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
+
+    void setExperimentInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
             CurrentExperimentNotInstantiated;
 
-    double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    double getExperimentTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
-    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+    void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
             UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned;
 }

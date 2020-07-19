@@ -41,13 +41,13 @@ public class CommandLineHandler {
     private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound,
             PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
-        requestExperimentController.setExperiments(selectedExperiments);
+        requestExperimentController.setExperimentInfos(selectedExperiments);
 
-        LabDTO selectedLab = getSelectedLab(selectedExperiments);
-        requestExperimentController.setLab(selectedLab);
+        LabDTO selectedLab = getSelectedLab();
+        requestExperimentController.setExperimentLab(selectedLab);
 
-        Date selectedTime = getExperimentTime(selectedLab, selectedExperiments);
-        requestExperimentController.setTime(selectedTime);
+        Date selectedTime = getExperimentTime();
+        requestExperimentController.setExperimentTime(selectedTime);
 
         handleInsurance();
 
@@ -61,7 +61,7 @@ public class CommandLineHandler {
         requestExperimentController.loginPatient(patientId, password);
     }
 
-    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments, PatientNotLogin {
         List<ExperimentInfoDTO> experimentInfos = requestExperimentController.getExperimentInfos();
         if (experimentInfos.size() == 0) {
             throw new NoExperiments();
@@ -99,8 +99,8 @@ public class CommandLineHandler {
         return selectedExperimentInfos;
     }
 
-    private LabDTO getSelectedLab(List<ExperimentInfoDTO> experimentInfoDTOs) throws NoLabs {
-        List<LabDTO> experimentsLabDTOs = requestExperimentController.getLabsForExperiments(experimentInfoDTOs);
+    private LabDTO getSelectedLab() throws NoLabs, PatientNotLogin, CurrentExperimentNotInstantiated {
+        List<LabDTO> experimentsLabDTOs = requestExperimentController.getExperimentLabs();
         if (experimentsLabDTOs.size() == 0) {
             throw new NoLabs();
         }
@@ -145,8 +145,9 @@ public class CommandLineHandler {
         }
     }
 
-    private Date getExperimentTime(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOS) throws LabNotFound {
-        List<Date> experimentTimes = requestExperimentController.getTimesForExperiments(labDTO, experimentInfoDTOS);
+    private Date getExperimentTime() throws NoLabAssigned,
+            PatientNotLogin, CurrentExperimentNotInstantiated {
+        List<Date> experimentTimes = requestExperimentController.getExperimentTimes();
         printExperimentTimes(experimentTimes);
 
         return getSelectedTimeInput(experimentTimes);
@@ -222,12 +223,12 @@ public class CommandLineHandler {
             return;
         }
 
-        requestExperimentController.setInsurance(insuranceNumber);
+        requestExperimentController.setExperimentInsurance(insuranceNumber);
     }
 
     private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
             SamplerNotAssigned, NoLabAssigned {
-        double totalPrice = requestExperimentController.getTotalPrice();
+        double totalPrice = requestExperimentController.getExperimentTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
 
         handlePayInput();
@@ -239,7 +240,7 @@ public class CommandLineHandler {
         String bandSessionId = scanner.nextLine();
 
         try {
-            requestExperimentController.payTotalPrice(bandSessionId);
+            requestExperimentController.payExperimentTotalPrice(bandSessionId);
         } catch (UnsuccessfulPayment exception) {
             System.out.println(exception.toString());
             handlePay();

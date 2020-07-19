@@ -75,4 +75,14 @@ public class Patient extends User {
         patientExperimentRecords.add(currentPatientExperimentRecord);
         currentPatientExperimentRecord = null;
     }
+
+    public List<ExperimentInfo> getExperimentInfos() throws CurrentExperimentNotInstantiated {
+        checkExperimentInstantiated();
+        return currentPatientExperimentRecord.getExperimentInfos();
+    }
+
+    public List<Date> getExperimentTimes() throws CurrentExperimentNotInstantiated, NoLabAssigned {
+        checkExperimentInstantiated();
+        return currentPatientExperimentRecord.getExperimentTimes();
+    }
 }

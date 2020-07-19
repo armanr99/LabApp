@@ -11,6 +11,9 @@ import main.java.models.Lab.Lab;
 import main.java.models.User.Patient;
 import main.java.models.User.Sampler;
 
+import java.util.Date;
+import java.util.List;
+
 public class PatientExperimentRecord extends ExperimentRecord {
     private Lab lab;
     private Sampler sampler;
@@ -98,5 +101,14 @@ public class PatientExperimentRecord extends ExperimentRecord {
         if (lab == null) {
             throw new NoLabAssigned();
         }
+    }
+
+    public List<ExperimentInfo> getExperimentInfos() {
+        return experimentInfos;
+    }
+
+    public List<Date> getExperimentTimes() throws NoLabAssigned {
+        checkLabAssigned();
+        return lab.getTimes(experimentInfos);
     }
 }

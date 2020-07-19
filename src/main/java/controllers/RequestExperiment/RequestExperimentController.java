@@ -35,49 +35,46 @@ public class RequestExperimentController implements RequestExperimentControllerI
         labApp.loginPatient(patientId, password);
     }
 
-    public List<ExperimentInfoDTO> getExperimentInfos() {
+    public List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLogin {
         List<ExperimentInfo> experimentInfos = labApp.getExperimentInfos();
         return experimentInfoDTOMapper.getExperimentInfoDTOs(experimentInfos);
     }
 
-    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin,
+    public void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin,
             CurrentExperimentNotInstantiated {
         List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
-        labApp.setExperiments(experimentInfos);
+        labApp.setExperimentInfos(experimentInfos);
     }
 
-    public List<LabDTO> getLabsForExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) {
-        List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
-        List<Lab> labs = labApp.getLabsForExperiments(experimentInfos);
+    public List<LabDTO> getExperimentLabs() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        List<Lab> labs = labApp.getExperimentLabs();
         return labDTOMapper.getLabDTOs(labs);
     }
 
-    public List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound {
+    public void setExperimentLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
         Lab lab = labDTOMapper.getLab(labDTO);
-        List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
-        return labApp.getTimesForExperiments(lab, experimentInfos);
+        labApp.setExperimentLab(lab);
     }
 
-    public void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated {
-        Lab lab = labDTOMapper.getLab(labDTO);
-        labApp.setLab(lab);
+    public List<Date> getExperimentTimes() throws NoLabAssigned, PatientNotLogin, CurrentExperimentNotInstantiated {
+        return labApp.getExperimentTimes();
     }
 
-    public void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
-        labApp.setTime(experimentTime);
+    public void setExperimentTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        labApp.setExperimentTime(experimentTime);
     }
 
-    public void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
+    public void setExperimentInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
             CurrentExperimentNotInstantiated {
-        labApp.setInsurance(insuranceNumber);
+        labApp.setExperimentInsurance(insuranceNumber);
     }
 
-    public double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
-        return labApp.getTotalPrice();
+    public double getExperimentTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        return labApp.getExperimentTotalPrice();
     }
 
-    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+    public void payExperimentTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
             UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
-        labApp.payTotalPrice(bandSessionId);
+        labApp.payExperimentTotalPrice(bandSessionId);
     }
 }
