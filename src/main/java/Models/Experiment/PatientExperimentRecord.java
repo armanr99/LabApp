@@ -1,11 +1,13 @@
 package main.java.Models.Experiment;
 
+import main.java.Exceptions.SamplerNotAssigned;
 import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Exceptions.UnsuccessfulPayment;
 import main.java.Models.API.BankAPI;
 import main.java.Models.API.InsuranceAPI;
 import main.java.Models.General.Payment;
 import main.java.Models.Lab.Lab;
+import main.java.Models.User.Patient;
 import main.java.Models.User.Sampler;
 
 public class PatientExperimentRecord extends ExperimentRecord {
@@ -69,5 +71,16 @@ public class PatientExperimentRecord extends ExperimentRecord {
 
     public void assignSampler() throws SamplerNotAvailable {
         this.sampler = lab.getSampler(experimentInfos);
+    }
+
+    public void informSampler(Patient patient) throws SamplerNotAssigned {
+        checkSamplerAssigned();
+        sampler.addExperimentRecord(patient, this);
+    }
+
+    private void checkSamplerAssigned() throws SamplerNotAssigned {
+        if (sampler == null) {
+            throw new SamplerNotAssigned();
+        }
     }
 }

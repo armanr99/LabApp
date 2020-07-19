@@ -26,5 +26,5 @@ public interface RequestExperimentControllerInterface {
 
     double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
-    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable;
+    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned;
 }

@@ -38,7 +38,7 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable {
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperiments(selectedExperiments);
 
@@ -222,14 +222,14 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.setInsurance(insuranceNumber);
     }
 
-    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable {
+    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned {
         double totalPrice = requestExperimentController.getTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
 
         handlePayInput();
     }
 
-    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable {
+    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned {
         System.out.print("Please enter your bank user session id: ");
         String bandSessionId = scanner.nextLine();
 
