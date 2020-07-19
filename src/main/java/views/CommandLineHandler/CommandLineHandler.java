@@ -83,7 +83,7 @@ public class CommandLineHandler {
     }
 
     private List<ExperimentInfoDTO> getSelectedExperimentInfosInput(List<ExperimentInfoDTO> experimentInfos) {
-        System.out.print("Please choose experiments number separated by space: ");
+        System.out.print("Please choose experiment numbers separated by space: ");
 
         String selectedExperimentsStr = scanner.nextLine();
         String[] splitExperimentsStr = selectedExperimentsStr.split("\\s+");

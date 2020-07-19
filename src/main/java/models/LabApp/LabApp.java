@@ -67,9 +67,10 @@ public class LabApp {
         List<ExperimentInfo> experimentInfos = currentPatient.getExperimentInfos();
         List<Lab> experimentsLabs = new ArrayList<>();
 
-        for (Lab lab : Storage.getInstance().getLabRepository().getAll()) {
-            if (lab.hasSupport(experimentInfos))
+        for (Lab lab : storage.getLabRepository().getAll()) {
+            if (lab.hasSupport(experimentInfos)) {
                 experimentsLabs.add(lab);
+            }
         }
 
         return experimentsLabs;

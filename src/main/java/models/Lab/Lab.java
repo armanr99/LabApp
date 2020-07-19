@@ -47,8 +47,9 @@ public class Lab extends Entity {
 
     public boolean hasSupport(List<ExperimentInfo> inExperimentInfos) {
         for (ExperimentInfo inExperimentInfo : inExperimentInfos) {
-            if (!hasSupport(inExperimentInfo))
+            if (!hasSupport(inExperimentInfo)) {
                 return false;
+            }
         }
         return true;
     }
