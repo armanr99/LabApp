@@ -19,14 +19,14 @@ public class RequestExperimentController implements RequestExperimentControllerI
     private LabDTOMapper labDTOMapper;
     private ExperimentInfoDTOMapper experimentInfoDTOMapper;
 
-    public static RequestExperimentController getInstance() {
+    public static RequestExperimentController getInstance() throws InvalidObjectException {
         if (instance == null) {
             instance = new RequestExperimentController();
         }
         return instance;
     }
 
-    private RequestExperimentController() {
+    private RequestExperimentController() throws InvalidObjectException {
         labApp = LabApp.getInstance();
         labDTOMapper = new LabDTOMapper();
         experimentInfoDTOMapper = new ExperimentInfoDTOMapper();

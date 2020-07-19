@@ -16,7 +16,7 @@ public class CommandLineHandler {
     private Scanner scanner;
     private RequestExperimentController requestExperimentController;
 
-    public CommandLineHandler() {
+    public CommandLineHandler() throws InvalidObjectException {
         scanner = new Scanner(System.in);
         requestExperimentController = RequestExperimentController.getInstance();
     }

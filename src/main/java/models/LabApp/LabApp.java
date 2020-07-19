@@ -16,16 +16,19 @@ public class LabApp {
     private static LabApp instance;
     private Patient currentPatient;
     private Storage storage;
+    private ObjectsInitializer objectsInitializer;
 
-    public static LabApp getInstance() {
+    public static LabApp getInstance() throws InvalidObjectException {
         if (instance == null) {
             instance = new LabApp();
         }
         return instance;
     }
 
-    private LabApp() {
+    private LabApp() throws InvalidObjectException {
         storage = Storage.getInstance();
+        objectsInitializer = new ObjectsInitializer();
+        objectsInitializer.initialize();
     }
 
     public void loginPatient(int patientId, String password) throws PatientNotFound {
