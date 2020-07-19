@@ -61,5 +61,11 @@ public class Patient extends User {
     public void payTotalPrice(String bankSessionId) throws CurrentExperimentNotInstantiated, UnsuccessfulPayment {
         checkExperimentInstantiated();
         currentUserExperimentRecord.payTotalPrice(bankSessionId);
+        finalizeCurrentExperiment();
+    }
+
+    public void finalizeCurrentExperiment() {
+        userExperimentRecords.add(currentUserExperimentRecord);
+        currentUserExperimentRecord = null;
     }
 }
