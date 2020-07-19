@@ -155,7 +155,7 @@ public class LabApp {
         return currentPatient.getExperimentTotalPrice();
     }
 
-    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment {
+    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable {
         checkPatientLogin();
         currentPatient.payTotalPrice(bankSessionId);
         currentPatient.finalizeCurrentExperiment();

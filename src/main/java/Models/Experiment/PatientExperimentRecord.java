@@ -1,5 +1,6 @@
 package main.java.Models.Experiment;
 
+import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Exceptions.UnsuccessfulPayment;
 import main.java.Models.API.BankAPI;
 import main.java.Models.API.InsuranceAPI;
@@ -7,23 +8,19 @@ import main.java.Models.General.Payment;
 import main.java.Models.Lab.Lab;
 import main.java.Models.User.Sampler;
 
-public class UserExperimentRecord extends ExperimentRecord {
+public class PatientExperimentRecord extends ExperimentRecord {
     private Lab lab;
     private Sampler sampler;
     private int insuranceNumber;
     private Payment payment;
 
-    public UserExperimentRecord(int id) {
+    public PatientExperimentRecord(int id) {
         super(id);
         this.insuranceNumber = Integer.MAX_VALUE;
     }
 
     public void setLab(Lab lab) {
         this.lab = lab;
-    }
-
-    public void setSampler(Sampler sampler) {
-        this.sampler = sampler;
     }
 
     public void setInsuranceNumber(int insuranceNumber) {
@@ -68,5 +65,9 @@ public class UserExperimentRecord extends ExperimentRecord {
 
     protected Sampler getSampler() {
         return sampler;
+    }
+
+    public void assignSampler() throws SamplerNotAvailable {
+        this.sampler = lab.getSampler(experimentInfos);
     }
 }

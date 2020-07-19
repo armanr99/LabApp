@@ -1,5 +1,6 @@
 package main.java.Models.Lab;
 
+import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
@@ -70,5 +71,14 @@ public class Lab {
             dates.add(cal.getTime());
         }
         return dates;
+    }
+
+    public Sampler getSampler(List<ExperimentInfo> experimentInfos) throws SamplerNotAvailable {
+        if (samplers.isEmpty()) {
+            throw new SamplerNotAvailable();
+        } else {
+            int samplerIndex = (int) (Math.random() * samplers.size());
+            return samplers.get(samplerIndex);
+        }
     }
 }

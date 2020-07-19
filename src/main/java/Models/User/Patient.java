@@ -1,8 +1,9 @@
 package main.java.Models.User;
 
 import main.java.Exceptions.CurrentExperimentNotInstantiated;
+import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Exceptions.UnsuccessfulPayment;
-import main.java.Models.Experiment.UserExperimentRecord;
+import main.java.Models.Experiment.PatientExperimentRecord;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
 import main.java.Models.Lab.Lab;
@@ -14,58 +15,63 @@ import java.util.List;
 public class Patient extends User {
     private String ssn;
     private Address address;
-    private List<UserExperimentRecord> userExperimentRecords;
-    private UserExperimentRecord currentUserExperimentRecord;
+    private List<PatientExperimentRecord> patientExperimentRecords;
+    private PatientExperimentRecord currentPatientExperimentRecord;
 
     public Patient(int id, String name, String email, String password, String ssn, Address address) {
         super(id, name, email, password);
         this.ssn = ssn;
         this.address = address;
-        this.userExperimentRecords = new ArrayList<>();
+        this.patientExperimentRecords = new ArrayList<>();
     }
 
     public void createNewExperiment(int experimentId) {
-        this.currentUserExperimentRecord = new UserExperimentRecord(experimentId);
+        this.currentPatientExperimentRecord = new PatientExperimentRecord(experimentId);
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        this.currentUserExperimentRecord.setExperimentInfos(experimentInfos);
+        this.currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
     }
 
     private void checkExperimentInstantiated() throws CurrentExperimentNotInstantiated {
-        if (currentUserExperimentRecord == null)
+        if (currentPatientExperimentRecord == null)
             throw new CurrentExperimentNotInstantiated();
     }
 
     public void setExperimentLab(Lab lab) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        currentUserExperimentRecord.setLab(lab);
+        currentPatientExperimentRecord.setLab(lab);
     }
 
     public void setExperimentTime(Date experimentTime) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        currentUserExperimentRecord.setTime(experimentTime);
+        currentPatientExperimentRecord.setTime(experimentTime);
     }
 
     public void setExperimentInsuranceNumber(int insuranceNumber) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        currentUserExperimentRecord.setInsuranceNumber(insuranceNumber);
+        currentPatientExperimentRecord.setInsuranceNumber(insuranceNumber);
     }
 
     public double getExperimentTotalPrice() throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        return currentUserExperimentRecord.getTotalPrice();
+        return currentPatientExperimentRecord.getTotalPrice();
     }
 
     public void payTotalPrice(String bankSessionId) throws CurrentExperimentNotInstantiated, UnsuccessfulPayment {
         checkExperimentInstantiated();
-        currentUserExperimentRecord.payTotalPrice(bankSessionId);
-        finalizeCurrentExperiment();
+        currentPatientExperimentRecord.payTotalPrice(bankSessionId);
     }
 
-    public void finalizeCurrentExperiment() {
-        userExperimentRecords.add(currentUserExperimentRecord);
-        currentUserExperimentRecord = null;
+    public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable {
+        checkExperimentInstantiated();
+        currentPatientExperimentRecord.assignSampler();
+        archiveCurrentExperiment();
+    }
+
+    private void archiveCurrentExperiment() {
+        patientExperimentRecords.add(currentPatientExperimentRecord);
+        currentPatientExperimentRecord = null;
     }
 }

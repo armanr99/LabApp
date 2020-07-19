@@ -7,9 +7,9 @@ public class LabExperimentRecord extends ExperimentRecord {
     private Patient patient;
     private Sampler sampler;
 
-    public LabExperimentRecord(Patient patient, UserExperimentRecord userExperimentRecord) {
-        super(userExperimentRecord.id, userExperimentRecord.date, userExperimentRecord.experimentInfos);
+    public LabExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
+        super(patientExperimentRecord.id, patientExperimentRecord.date, patientExperimentRecord.experimentInfos);
         this.patient = patient;
-        this.sampler = userExperimentRecord.getSampler();
+        this.sampler = patientExperimentRecord.getSampler();
     }
 }
