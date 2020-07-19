@@ -1,6 +1,6 @@
 package main.java;
 
-import main.java.Views.CommandLineHandler.CommandLineHandler;
+import main.java.views.CommandLineHandler.CommandLineHandler;
 
 public class Main {
     public static void main(String[] args) {
