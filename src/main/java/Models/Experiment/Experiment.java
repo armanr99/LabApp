@@ -1,5 +1,6 @@
 package main.java.Models.Experiment;
 
+import main.java.Models.API.InsuranceAPI;
 import main.java.Models.Lab.Lab;
 import main.java.Models.User.Sampler;
 
@@ -37,5 +38,32 @@ public class Experiment {
 
     public void setInsuranceNumber(int insuranceNumber) {
         this.insuranceNumber = insuranceNumber;
+    }
+
+    public double getTotalCost() {
+        double totalCost = getPureCost();
+        totalCost = getCostWithInsurance(totalCost);
+        return totalCost;
+    }
+
+    private double getPureCost() {
+        double totalCost = 0;
+
+        for (ExperimentInfo experimentInfo : experimentInfos) {
+            totalCost += experimentInfo.getPrice();
+        }
+        return totalCost;
+    }
+
+    private double getCostWithInsurance(double totalCost) {
+        if (hasInsurance()) {
+            double insurancePercentage = InsuranceAPI.getInstance().getInsurancePercentage(insuranceNumber);
+            totalCost = Double.max(0, totalCost - (totalCost * insurancePercentage));
+        }
+        return totalCost;
+    }
+
+    private boolean hasInsurance() {
+        return (insuranceNumber != Integer.MAX_VALUE);
     }
 }

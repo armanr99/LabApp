@@ -13,4 +13,8 @@ public class InsuranceAPI {
     public boolean isValidInsuranceNumber(int insuranceNumber) {
         return (Math.random() < 0.5);
     }
+
+    public double getInsurancePercentage(int insuranceNumber) {
+        return Math.random();
+    }
 }

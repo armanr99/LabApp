@@ -149,4 +149,9 @@ public class LabApp {
         if (!InsuranceAPI.getInstance().isValidInsuranceNumber(insuranceNumber))
             throw new InvalidInsuranceNumber();
     }
+
+    public double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        checkPatientLogin();
+        return currentPatient.getExperimentTotalCost();
+    }
 }

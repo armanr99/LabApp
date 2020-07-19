@@ -54,4 +54,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
     public void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated {
         labApp.setInsurance(insuranceNumber);
     }
+
+    public double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        return labApp.getTotalCost();
+    }
 }

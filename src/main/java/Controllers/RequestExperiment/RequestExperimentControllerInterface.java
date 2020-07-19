@@ -23,4 +23,6 @@ public interface RequestExperimentControllerInterface {
     void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
     void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated;
+
+    double getTotalCost() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 }

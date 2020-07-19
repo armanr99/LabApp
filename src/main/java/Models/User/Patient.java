@@ -51,4 +51,9 @@ public class Patient extends User {
         checkExperimentInstantiated();
         currentExperiment.setInsuranceNumber(insuranceNumber);
     }
+
+    public double getExperimentTotalCost() throws CurrentExperimentNotInstantiated {
+        checkExperimentInstantiated();
+        return currentExperiment.getTotalCost();
+    }
 }

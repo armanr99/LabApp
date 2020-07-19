@@ -49,6 +49,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.setTime(selectedTime);
 
         handleInsurance();
+
+        handlePay();
     }
 
     private void handleLoginPatient(int patientId) throws PatientNotFound {
@@ -134,8 +136,11 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
     }
 
     private void validateIntegerStr(String integerStr) throws WrongIntegerFormat {
-        if (!integerStr.matches(("-?\\d+")))
+        try {
+            Integer.parseInt(integerStr);
+        } catch (NumberFormatException exception) {
             throw new WrongIntegerFormat();
+        }
     }
 
     private Date getExperimentTime(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOS) throws LabNotFound {
@@ -215,5 +220,42 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
 
         requestExperimentController.setInsurance(insuranceNumber);
+    }
+
+    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+        double totalCost = requestExperimentController.getTotalCost();
+        System.out.println(String.format("Your total cost is: %f", totalCost));
+        handlePayInput();
+    }
+
+    private void handlePayInput(double totalCost) {
+        System.out.print("Please re-enter your total cost to pay!: ");
+        double totalCostInput;
+
+        try {
+            totalCostInput = getDoubleInput();
+            if (totalCostInput != totalCost)
+                throw new WrongTotalCostInput();
+        } catch (WrongDoubleFormat | WrongTotalCostInput exception) {
+            System.out.println(exception.toString());
+            handlePayInput(totalCost);
+            return;
+        }
+
+        //TODO
+    }
+
+    public double getDoubleInput() throws WrongDoubleFormat {
+        String inputStr = scanner.nextLine();
+        validateDoubleStr(inputStr);
+        return Double.parseDouble(inputStr);
+    }
+
+    private void validateDoubleStr(String doubleStr) throws WrongDoubleFormat {
+        try {
+            Double.parseDouble(doubleStr);
+        } catch (NumberFormatException exception) {
+            throw new WrongDoubleFormat();
+        }
     }
 }
