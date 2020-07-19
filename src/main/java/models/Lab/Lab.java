@@ -36,10 +36,6 @@ public class Lab extends Entity {
         this.experimentInfos = experimentInfos;
     }
 
-    public List<ExperimentInfo> getExperimentInfos() {
-        return experimentInfos;
-    }
-
     public String getName() {
         return name;
     }

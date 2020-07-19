@@ -3,7 +3,6 @@ package main.java.models.LabApp;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.General.Address;
 import main.java.models.Lab.Lab;
-import main.java.models.Storage.SamplerRepository;
 import main.java.models.Storage.Storage;
 import main.java.models.User.Patient;
 import main.java.models.User.Sampler;

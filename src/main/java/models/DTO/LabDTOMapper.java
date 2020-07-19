@@ -11,16 +11,6 @@ public class LabDTOMapper {
         return Storage.getInstance().getLabRepository().find(labDTO.getId());
     }
 
-    public List<Lab> getLabs(List<LabDTO> labDTOs) {
-        List<Lab> labs = new ArrayList<>();
-
-        for (LabDTO labDTO : labDTOs) {
-            labs.add(getLab(labDTO));
-        }
-
-        return labs;
-    }
-
     public LabDTO getLabDTO(Lab lab) {
         return new LabDTO(lab);
     }
@@ -31,7 +21,6 @@ public class LabDTOMapper {
         for (Lab lab : labs) {
             labDTOs.add(getLabDTO(lab));
         }
-
         return labDTOs;
     }
 }
