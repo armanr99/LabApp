@@ -61,4 +61,8 @@ public class UserExperimentRecord extends ExperimentRecord {
         double totalPrice = getTotalPrice();
         payment = BankAPI.getInstance().pay(bankSessionId, totalPrice);
     }
+
+    protected Lab getLab() {
+        return lab;
+    }
 }
