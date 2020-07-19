@@ -1,9 +1,9 @@
-package main.java.models.General;
+package main.java.models.Storage;
 
-public abstract class Entity {
-    private Integer id;
+public abstract class ContainerEntity {
+    protected Integer id;
 
-    public Entity(int id) {
+    public ContainerEntity(int id) {
         this.id = id;
     }
 
@@ -18,7 +18,7 @@ public abstract class Entity {
     @Override
     public boolean equals(Object object) {
         if (object != null && this.getClass() == object.getClass()) {
-            Entity typedObject = (Entity) object;
+            ContainerEntity typedObject = (ContainerEntity) object;
             if (this.getId() == null || typedObject.getId() == null) {
                 return false;
             }

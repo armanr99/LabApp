@@ -1,13 +1,14 @@
 package main.java.models.User;
 
-public class User {
-    private int id;
+import main.java.models.Storage.ContainerEntity;
+
+public class User extends ContainerEntity {
     private String name;
     private String email;
     private String password;
 
     public User(int id, String name, String email, String password) {
-        this.id = id;
+        super(id);
         this.name = name;
         this.email = email;
         this.password = password;

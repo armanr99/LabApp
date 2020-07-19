@@ -5,6 +5,7 @@ import main.java.models.DTO.ExperimentInfoDTO;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Experiment.LabExperimentRecord;
 import main.java.models.General.Address;
+import main.java.models.Storage.ContainerEntity;
 import main.java.models.User.Sampler;
 
 import java.util.ArrayList;
@@ -12,14 +13,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Lab {
+public class Lab extends ContainerEntity {
     private String name;
     private Address address;
     private List<Sampler> samplers;
     private List<ExperimentInfo> experimentInfos;
     private List<LabExperimentRecord> experimentRecords;
 
-    public Lab(String name, Address address) {
+    public Lab(int id, String name, Address address) {
+        super(id);
         this.name = name;
         this.address = address;
     }

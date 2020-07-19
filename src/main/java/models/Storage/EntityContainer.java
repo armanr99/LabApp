@@ -1,17 +1,15 @@
 package main.java.models.Storage;
 
 
-import main.java.models.General.Entity;
-
 import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
-public abstract class Repository<T extends Entity> {
+public abstract class EntityContainer<T extends ContainerEntity> {
     private HashMap<Integer, T> records;
     private int nextId;
 
-    private Repository() {
+    public EntityContainer() {
         records = new HashMap<>();
         nextId = 0;
     }
