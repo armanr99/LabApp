@@ -52,7 +52,7 @@ public class LabApp {
 
     public List<ExperimentInfo> getExperimentInfos() throws PatientNotLogin {
         checkPatientLogin();
-        return storage.getExperimentInfoRepository().getAll();
+        return storage.getExperimentInfoRepository().getRecords();
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws PatientNotLogin,
@@ -67,7 +67,7 @@ public class LabApp {
         List<ExperimentInfo> experimentInfos = currentPatient.getExperimentInfos();
         List<Lab> experimentsLabs = new ArrayList<>();
 
-        for (Lab lab : storage.getLabRepository().getAll()) {
+        for (Lab lab : storage.getLabRepository().getRecords()) {
             if (lab.hasSupport(experimentInfos)) {
                 experimentsLabs.add(lab);
             }

@@ -37,7 +37,7 @@ public abstract class Repository<T extends Entity> {
         records.put(recordId, newRecord);
     }
 
-    public List<T> getAll() {
+    public List<T> getRecords() {
         return new ArrayList<>(records.values());
     }
 }
