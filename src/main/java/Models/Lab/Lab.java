@@ -3,7 +3,10 @@ package main.java.Models.Lab;
 import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Models.DTOs.ExperimentInfoDTO;
 import main.java.Models.Experiment.ExperimentInfo;
+import main.java.Models.Experiment.LabExperimentRecord;
+import main.java.Models.Experiment.PatientExperimentRecord;
 import main.java.Models.General.Address;
+import main.java.Models.User.Patient;
 import main.java.Models.User.Sampler;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ public class Lab {
     private Address address;
     private List<Sampler> samplers;
     private List<ExperimentInfo> experimentInfos;
+    private List<LabExperimentRecord> experimentRecords;
 
     public Lab(String name, Address address) {
         this.name = name;
@@ -80,5 +84,10 @@ public class Lab {
             int samplerIndex = (int) (Math.random() * samplers.size());
             return samplers.get(samplerIndex);
         }
+    }
+
+    public void addExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
+        LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, patientExperimentRecord);
+        experimentRecords.add(labExperimentRecord);
     }
 }

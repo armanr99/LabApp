@@ -1,5 +1,6 @@
 package main.java.Models.Experiment;
 
+import main.java.Exceptions.NoLabAssigned;
 import main.java.Exceptions.SamplerNotAssigned;
 import main.java.Exceptions.SamplerNotAvailable;
 import main.java.Exceptions.UnsuccessfulPayment;
@@ -73,7 +74,8 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.sampler = lab.getSampler(experimentInfos);
     }
 
-    public void informSampler(Patient patient) throws SamplerNotAssigned {
+    public void informSampler(Patient patient) throws SamplerNotAssigned, NoLabAssigned {
+        checkLabAssigned();
         checkSamplerAssigned();
         sampler.addExperimentRecord(patient, this);
     }
@@ -81,6 +83,18 @@ public class PatientExperimentRecord extends ExperimentRecord {
     private void checkSamplerAssigned() throws SamplerNotAssigned {
         if (sampler == null) {
             throw new SamplerNotAssigned();
+        }
+    }
+
+    public void informLab(Patient patient) throws NoLabAssigned, SamplerNotAssigned {
+        checkLabAssigned();
+        checkSamplerAssigned();
+        lab.addExperimentRecord(patient, this);
+    }
+
+    private void checkLabAssigned() throws NoLabAssigned {
+        if (lab == null) {
+            throw new NoLabAssigned();
         }
     }
 }

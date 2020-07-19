@@ -59,7 +59,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labApp.getTotalPrice();
     }
 
-    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned {
+    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         labApp.payTotalPrice(bandSessionId);
     }
 }

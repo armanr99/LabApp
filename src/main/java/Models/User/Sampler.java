@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sampler extends User {
-    private List<SamplerExperimentRecord> samplerExperimentRecords;
+    private List<SamplerExperimentRecord> experimentRecords;
 
     public Sampler(int id, String name, String email, String password) {
         super(id, name, email, password);
-        samplerExperimentRecords = new ArrayList<>();
+        experimentRecords = new ArrayList<>();
     }
 
     public void addExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
         SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, patientExperimentRecord);
-        samplerExperimentRecords.add(samplerExperimentRecord);
+        experimentRecords.add(samplerExperimentRecord);
     }
 }

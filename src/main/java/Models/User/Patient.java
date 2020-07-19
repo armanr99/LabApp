@@ -1,9 +1,6 @@
 package main.java.Models.User;
 
-import main.java.Exceptions.CurrentExperimentNotInstantiated;
-import main.java.Exceptions.SamplerNotAssigned;
-import main.java.Exceptions.SamplerNotAvailable;
-import main.java.Exceptions.UnsuccessfulPayment;
+import main.java.Exceptions.*;
 import main.java.Models.Experiment.PatientExperimentRecord;
 import main.java.Models.Experiment.ExperimentInfo;
 import main.java.Models.General.Address;
@@ -65,10 +62,11 @@ public class Patient extends User {
         currentPatientExperimentRecord.payTotalPrice(bankSessionId);
     }
 
-    public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned {
+    public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         checkExperimentInstantiated();
         currentPatientExperimentRecord.assignSampler();
         currentPatientExperimentRecord.informSampler(this);
+        currentPatientExperimentRecord.informLab(this);
         archiveCurrentExperiment();
     }
 
