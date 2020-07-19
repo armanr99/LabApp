@@ -77,4 +77,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
             UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         labApp.payExperimentTotalPrice(bandSessionId);
     }
+
+    public void logoutPatient() {
+        labApp.logoutPatient();
+    }
 }

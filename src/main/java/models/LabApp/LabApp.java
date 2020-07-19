@@ -115,4 +115,8 @@ public class LabApp {
         currentPatient.payTotalPrice(bankSessionId);
         currentPatient.finalizeCurrentExperiment();
     }
+
+    public void logoutPatient() {
+        currentPatient = null;
+    }
 }

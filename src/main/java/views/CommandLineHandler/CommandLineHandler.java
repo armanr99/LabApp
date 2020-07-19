@@ -26,19 +26,23 @@ public class CommandLineHandler {
         while (true) {
             try {
                 System.out.print("Please enter your id: ");
+
                 String patientIdStr = scanner.nextLine();
                 validateIntegerStr(patientIdStr);
                 int patientId = Integer.parseInt(patientIdStr);
 
                 handleLoginPatient(patientId);
                 handleExperimentRequest();
+
+                requestExperimentController.logoutPatient();
             } catch (Exception exception) {
                 System.out.println("Error: " + exception.toString());
+                requestExperimentController.logoutPatient();
             }
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound,
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound,
             PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperimentInfos(selectedExperiments);

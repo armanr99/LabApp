@@ -19,7 +19,8 @@ public interface RequestExperimentControllerInterface {
 
     void setExperimentLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
 
-    List<Date> getExperimentTimes() throws LabNotFound, NoLabAssigned, PatientNotLogin, CurrentExperimentNotInstantiated;
+    List<Date> getExperimentTimes() throws LabNotFound, NoLabAssigned, PatientNotLogin,
+            CurrentExperimentNotInstantiated;
 
     void setExperimentTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
@@ -30,4 +31,6 @@ public interface RequestExperimentControllerInterface {
 
     void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
             UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned;
+
+    void logoutPatient();
 }
