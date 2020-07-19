@@ -9,6 +9,7 @@ import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Lab.Lab;
 import main.java.models.LabApp.LabApp;
 
+import java.io.InvalidObjectException;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
     }
 
     public void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin,
-            CurrentExperimentNotInstantiated {
+            CurrentExperimentNotInstantiated, InvalidObjectException {
         List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
         labApp.setExperimentInfos(experimentInfos);
     }
@@ -74,7 +75,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
     }
 
     public void payExperimentTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
-            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         labApp.payExperimentTotalPrice(bandSessionId);
     }
 

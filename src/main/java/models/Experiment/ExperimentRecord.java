@@ -9,12 +9,11 @@ public abstract class ExperimentRecord extends Entity {
     protected Date date;
     protected List<ExperimentInfo> experimentInfos;
 
-    public ExperimentRecord(int id) {
-        super(id);
+    public ExperimentRecord() {
+        super();
     }
 
-    public ExperimentRecord(int id, Date date, List<ExperimentInfo> experimentInfos) {
-        super(id);
+    public ExperimentRecord(Date date, List<ExperimentInfo> experimentInfos) {
         this.date = date;
         this.experimentInfos = experimentInfos;
     }

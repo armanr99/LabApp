@@ -5,7 +5,9 @@ import main.java.models.Experiment.PatientExperimentRecord;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.General.Address;
 import main.java.models.Lab.Lab;
+import main.java.models.Storage.Storage;
 
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,13 +25,14 @@ public class Patient extends User {
         this.patientExperimentRecords = new ArrayList<>();
     }
 
-    public void createNewExperiment(int experimentId) {
-        this.currentPatientExperimentRecord = new PatientExperimentRecord(experimentId);
+    public void createNewExperimentRecord() throws InvalidObjectException {
+        currentPatientExperimentRecord = new PatientExperimentRecord();
+        Storage.getInstance().getExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws CurrentExperimentNotInstantiated {
         checkExperimentInstantiated();
-        this.currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
+        currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
     }
 
     private void checkExperimentInstantiated() throws CurrentExperimentNotInstantiated {
@@ -63,7 +66,7 @@ public class Patient extends User {
     }
 
     public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable,
-            SamplerNotAssigned, NoLabAssigned {
+            SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         checkExperimentInstantiated();
         currentPatientExperimentRecord.assignSampler();
         currentPatientExperimentRecord.informSampler(this);

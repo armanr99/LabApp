@@ -2,9 +2,10 @@ package main.java.models.Storage;
 
 public class Storage {
     private static Storage instance;
-    private LabContainer labContainer;
-    private PatientContainer patientContainer;
-    private ExperimentInfoContainer experimentInfoContainer;
+    private LabRepository labRepository;
+    private PatientRepository patientRepository;
+    private ExperimentInfoRepository experimentInfoRepository;
+    private ExperimentRecordRepository experimentRecordRepository;
 
     public static Storage getInstance() {
         if (instance == null) {
@@ -14,20 +15,25 @@ public class Storage {
     }
 
     public Storage() {
-        labContainer = new LabContainer();
-        patientContainer = new PatientContainer();
-        experimentInfoContainer = new ExperimentInfoContainer();
+        labRepository = new LabRepository();
+        patientRepository = new PatientRepository();
+        experimentInfoRepository = new ExperimentInfoRepository();
+        experimentRecordRepository = new ExperimentRecordRepository();
     }
 
-    public LabContainer getLabContainer() {
-        return labContainer;
+    public LabRepository getLabRepository() {
+        return labRepository;
     }
 
-    public PatientContainer getPatientContainer() {
-        return patientContainer;
+    public PatientRepository getPatientRepository() {
+        return patientRepository;
     }
 
-    public ExperimentInfoContainer getExperimentInfoContainer() {
-        return experimentInfoContainer;
+    public ExperimentInfoRepository getExperimentInfoRepository() {
+        return experimentInfoRepository;
+    }
+
+    public ExperimentRecordRepository getExperimentRecordRepository() {
+        return experimentRecordRepository;
     }
 }

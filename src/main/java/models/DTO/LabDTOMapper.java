@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LabDTOMapper {
     public Lab getLab(LabDTO labDTO) {
-        return Storage.getInstance().getLabContainer().find(labDTO.getId());
+        return Storage.getInstance().getLabRepository().find(labDTO.getId());
     }
 
     public List<Lab> getLabs(List<LabDTO> labDTOs) {

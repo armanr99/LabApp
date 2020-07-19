@@ -7,6 +7,7 @@ import main.java.models.Lab.Lab;
 import main.java.models.Storage.Storage;
 import main.java.models.User.Patient;
 
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.List;
 public class LabApp {
     private static LabApp instance;
     private Patient currentPatient;
-    private int nextExperimentId;
     private Storage storage;
 
     public static LabApp getInstance() {
@@ -25,16 +25,11 @@ public class LabApp {
     }
 
     private LabApp() {
-        nextExperimentId = 0;
         storage = Storage.getInstance();
     }
 
-    private int getNextExperimentId() {
-        return nextExperimentId++;
-    }
-
     public void loginPatient(int patientId, String password) throws PatientNotFound {
-        Patient patient = storage.getPatientContainer().find(patientId);
+        Patient patient = storage.getPatientRepository().find(patientId);
         if (patient.hasPassword(password)) {
             currentPatient = patient;
         } else {
@@ -47,18 +42,18 @@ public class LabApp {
             throw new PatientNotLogin();
     }
 
-    public void createNewExperiment() throws PatientNotLogin {
+    public void createNewExperiment() throws PatientNotLogin, InvalidObjectException {
         checkPatientLogin();
-        currentPatient.createNewExperiment(getNextExperimentId());
+        currentPatient.createNewExperimentRecord();
     }
 
     public List<ExperimentInfo> getExperimentInfos() throws PatientNotLogin {
         checkPatientLogin();
-        return storage.getExperimentInfoContainer().getAll();
+        return storage.getExperimentInfoRepository().getAll();
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws PatientNotLogin,
-            CurrentExperimentNotInstantiated {
+            CurrentExperimentNotInstantiated, InvalidObjectException {
         createNewExperiment();
         currentPatient.setExperimentInfos(experimentInfos);
     }
@@ -69,7 +64,7 @@ public class LabApp {
         List<ExperimentInfo> experimentInfos = currentPatient.getExperimentInfos();
         List<Lab> experimentsLabs = new ArrayList<>();
 
-        for (Lab lab : Storage.getInstance().getLabContainer().getAll()) {
+        for (Lab lab : Storage.getInstance().getLabRepository().getAll()) {
             if (lab.hasSupport(experimentInfos))
                 experimentsLabs.add(lab);
         }
@@ -110,7 +105,7 @@ public class LabApp {
     }
 
     public void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
-            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         checkPatientLogin();
         currentPatient.payTotalPrice(bankSessionId);
         currentPatient.finalizeCurrentExperiment();

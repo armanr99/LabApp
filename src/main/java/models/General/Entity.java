@@ -3,6 +3,9 @@ package main.java.models.General;
 public abstract class Entity {
     protected Integer id;
 
+    public Entity() {
+    }
+
     public Entity(int id) {
         this.id = id;
     }

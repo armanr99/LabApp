@@ -6,11 +6,11 @@ import main.java.models.General.Entity;
 import java.io.InvalidObjectException;
 import java.util.*;
 
-public abstract class EntityContainer<T extends Entity> {
+public abstract class Repository<T extends Entity> {
     private HashMap<Integer, T> records;
     private int nextId;
 
-    public EntityContainer() {
+    public Repository() {
         records = new HashMap<>();
         nextId = 0;
     }
@@ -23,7 +23,7 @@ public abstract class EntityContainer<T extends Entity> {
         }
     }
 
-    private int getNextId() {
+    public int getNextId() {
         return nextId++;
     }
 

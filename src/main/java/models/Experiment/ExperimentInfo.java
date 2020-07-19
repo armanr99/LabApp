@@ -7,8 +7,7 @@ public class ExperimentInfo extends Entity {
     private String description;
     private double price;
 
-    public ExperimentInfo(int id, String name, String description, double price) {
-        super(id);
+    public ExperimentInfo(String name, String description, double price) {
         this.name = name;
         this.description = description;
         this.price = price;

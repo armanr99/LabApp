@@ -5,6 +5,7 @@ import main.java.exceptions.*;
 import main.java.models.DTO.ExperimentInfoDTO;
 import main.java.models.DTO.LabDTO;
 
+import java.io.InvalidObjectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +50,8 @@ public class CommandLineHandler {
     }
 
     private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound,
-            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned
+            , InvalidObjectException {
         handleSelectExperiments();
         handleSelectLab();
         handleSelectTime();
@@ -57,7 +59,8 @@ public class CommandLineHandler {
         handlePay();
     }
 
-    private void handleSelectExperiments() throws PatientNotLogin, CurrentExperimentNotInstantiated, NoExperiments {
+    private void handleSelectExperiments() throws PatientNotLogin, CurrentExperimentNotInstantiated, NoExperiments,
+            InvalidObjectException {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperimentInfos(selectedExperiments);
     }
@@ -238,7 +241,7 @@ public class CommandLineHandler {
     }
 
     private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
-            SamplerNotAssigned, NoLabAssigned {
+            SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         double totalPrice = requestExperimentController.getExperimentTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
 
@@ -246,7 +249,7 @@ public class CommandLineHandler {
     }
 
     private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
-            SamplerNotAssigned, NoLabAssigned {
+            SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         System.out.print("Please enter your bank user session id: ");
         String bandSessionId = scanner.nextLine();
 

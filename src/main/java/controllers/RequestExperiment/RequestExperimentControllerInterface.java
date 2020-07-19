@@ -4,6 +4,7 @@ import main.java.exceptions.*;
 import main.java.models.DTO.ExperimentInfoDTO;
 import main.java.models.DTO.LabDTO;
 
+import java.io.InvalidObjectException;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RequestExperimentControllerInterface {
     List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLogin;
 
     void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin,
-            CurrentExperimentNotInstantiated;
+            CurrentExperimentNotInstantiated, InvalidObjectException;
 
     List<LabDTO> getExperimentLabs() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
@@ -30,7 +31,7 @@ public interface RequestExperimentControllerInterface {
     double getExperimentTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
     void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
-            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned;
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned, InvalidObjectException;
 
     void logoutPatient();
 }

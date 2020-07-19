@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ExperimentInfoDTOMapper {
     public ExperimentInfo getExperimentInfo(ExperimentInfoDTO experimentInfoDTO) {
-        return Storage.getInstance().getExperimentInfoContainer().find(experimentInfoDTO.getId());
+        return Storage.getInstance().getExperimentInfoRepository().find(experimentInfoDTO.getId());
     }
 
     public List<ExperimentInfo> getExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) {

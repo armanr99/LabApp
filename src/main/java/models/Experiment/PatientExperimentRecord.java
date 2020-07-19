@@ -8,9 +8,11 @@ import main.java.models.API.BankAPI;
 import main.java.models.API.InsuranceAPI;
 import main.java.models.General.Payment;
 import main.java.models.Lab.Lab;
+import main.java.models.Storage.Storage;
 import main.java.models.User.Patient;
 import main.java.models.User.Sampler;
 
+import java.io.InvalidObjectException;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +22,7 @@ public class PatientExperimentRecord extends ExperimentRecord {
     private int insuranceNumber;
     private Payment payment;
 
-    public PatientExperimentRecord(int id) {
-        super(id);
+    public PatientExperimentRecord() {
         this.insuranceNumber = Integer.MAX_VALUE;
     }
 
@@ -77,10 +78,11 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.sampler = lab.getSampler(experimentInfos);
     }
 
-    public void informSampler(Patient patient) throws SamplerNotAssigned, NoLabAssigned {
+    public void informSampler(Patient patient) throws SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
         checkLabAssigned();
         checkSamplerAssigned();
         SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, this);
+        Storage.getInstance().getExperimentRecordRepository().insert(samplerExperimentRecord);
         sampler.addExperimentRecord(samplerExperimentRecord);
     }
 
@@ -90,10 +92,11 @@ public class PatientExperimentRecord extends ExperimentRecord {
         }
     }
 
-    public void informLab(Patient patient) throws NoLabAssigned, SamplerNotAssigned {
+    public void informLab(Patient patient) throws NoLabAssigned, SamplerNotAssigned, InvalidObjectException {
         checkLabAssigned();
         checkSamplerAssigned();
         LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, this);
+        Storage.getInstance().getExperimentRecordRepository().insert(labExperimentRecord);
         lab.addExperimentRecord(labExperimentRecord);
     }
 
