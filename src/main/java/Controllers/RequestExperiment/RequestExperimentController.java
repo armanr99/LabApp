@@ -31,7 +31,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labApp.getExperimentInfos();
     }
 
-    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated {
+    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound,
+            PatientNotLogin, CurrentExperimentNotInstantiated {
         labApp.setExperiments(experimentInfoDTOs);
     }
 
@@ -51,7 +52,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
         labApp.setTime(experimentTime);
     }
 
-    public void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated {
+    public void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
+            CurrentExperimentNotInstantiated {
         labApp.setInsurance(insuranceNumber);
     }
 
@@ -59,7 +61,8 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labApp.getTotalPrice();
     }
 
-    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    public void payTotalPrice(String bandSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         labApp.payTotalPrice(bandSessionId);
     }
 }

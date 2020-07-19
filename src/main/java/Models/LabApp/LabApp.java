@@ -85,7 +85,8 @@ public class LabApp {
         throw new LabNotFound(labName);
     }
 
-    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin, ExperimentInfoNotFound, CurrentExperimentNotInstantiated {
+    public void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLogin,
+            ExperimentInfoNotFound, CurrentExperimentNotInstantiated {
         createNewExperiment();
         List<ExperimentInfo> patientExperimentInfos = getExperimentInfos(experimentInfoDTOs);
         currentPatient.setExperimentInfos(patientExperimentInfos);
@@ -139,7 +140,8 @@ public class LabApp {
         currentPatient.setExperimentTime(experimentTime);
     }
 
-    public void setInsurance(int insuranceNumber) throws InvalidInsuranceNumber, PatientNotLogin, CurrentExperimentNotInstantiated {
+    public void setInsurance(int insuranceNumber) throws InvalidInsuranceNumber, PatientNotLogin,
+            CurrentExperimentNotInstantiated {
         checkPatientLogin();
         validateInsuranceNumber(insuranceNumber);
         currentPatient.setExperimentInsuranceNumber(insuranceNumber);
@@ -155,7 +157,8 @@ public class LabApp {
         return currentPatient.getExperimentTotalPrice();
     }
 
-    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    public void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         checkPatientLogin();
         currentPatient.payTotalPrice(bankSessionId);
         currentPatient.finalizeCurrentExperiment();

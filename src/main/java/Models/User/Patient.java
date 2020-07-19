@@ -62,7 +62,8 @@ public class Patient extends User {
         currentPatientExperimentRecord.payTotalPrice(bankSessionId);
     }
 
-    public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    public void finalizeCurrentExperiment() throws CurrentExperimentNotInstantiated, SamplerNotAvailable,
+            SamplerNotAssigned, NoLabAssigned {
         checkExperimentInstantiated();
         currentPatientExperimentRecord.assignSampler();
         currentPatientExperimentRecord.informSampler(this);

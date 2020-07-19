@@ -16,15 +16,18 @@ public interface RequestExperimentControllerInterface {
 
     List<Date> getTimesForExperiments(LabDTO labDTO, List<ExperimentInfoDTO> experimentInfoDTOs) throws LabNotFound;
 
-    void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated;
+    void setExperiments(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin,
+            CurrentExperimentNotInstantiated;
 
     void setLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
 
     void setTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
-    void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated;
+    void setInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
+            CurrentExperimentNotInstantiated;
 
     double getTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
 
-    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated, UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned;
+    void payTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
+            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned;
 }

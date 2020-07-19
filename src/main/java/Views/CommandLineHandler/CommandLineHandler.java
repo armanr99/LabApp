@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-public class CommandLineHandler implements CommandLineHandlerInterface {
+public class CommandLineHandler {
     private Scanner scanner;
     private RequestExperimentController requestExperimentController;
 
@@ -38,7 +38,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound, PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound, ExperimentInfoNotFound,
+            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperiments(selectedExperiments);
 
@@ -111,7 +112,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
     private void printLabInfos(List<LabDTO> labDTOs) {
         for (int i = 0; i < labDTOs.size(); i++) {
             LabDTO labDTO = labDTOs.get(i);
-            String lineResult = String.format("%d: Name: %s, Address: %s", i, labDTO.getName(), labDTO.getFullAddress());
+            String lineResult = String.format("%d: Name: %s, Address: %s", i, labDTO.getName(),
+                    labDTO.getFullAddress());
             System.out.println(lineResult);
         }
     }
@@ -207,7 +209,8 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         }
     }
 
-    private void handleInsuranceCode() throws PatientNotLogin, InvalidInsuranceNumber, CurrentExperimentNotInstantiated {
+    private void handleInsuranceCode() throws PatientNotLogin, InvalidInsuranceNumber,
+            CurrentExperimentNotInstantiated {
         System.out.println("Please enter your insurance code: ");
         int insuranceNumber;
 
@@ -222,14 +225,16 @@ public class CommandLineHandler implements CommandLineHandlerInterface {
         requestExperimentController.setInsurance(insuranceNumber);
     }
 
-    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
+            SamplerNotAssigned, NoLabAssigned {
         double totalPrice = requestExperimentController.getTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
 
         handlePayInput();
     }
 
-    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned {
+    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
+            SamplerNotAssigned, NoLabAssigned {
         System.out.print("Please enter your bank user session id: ");
         String bandSessionId = scanner.nextLine();
 
