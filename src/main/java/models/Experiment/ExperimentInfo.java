@@ -1,8 +1,8 @@
 package main.java.models.Experiment;
 
-import main.java.models.Storage.ContainerEntity;
+import main.java.models.General.Entity;
 
-public class ExperimentInfo extends ContainerEntity {
+public class ExperimentInfo extends Entity {
     private String name;
     private String description;
     private double price;

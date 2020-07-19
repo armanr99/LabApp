@@ -4,7 +4,7 @@ import main.java.exceptions.SamplerNotAvailable;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Experiment.LabExperimentRecord;
 import main.java.models.General.Address;
-import main.java.models.Storage.ContainerEntity;
+import main.java.models.General.Entity;
 import main.java.models.User.Sampler;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class Lab extends ContainerEntity {
+public class Lab extends Entity {
     private String name;
     private Address address;
     private List<Sampler> samplers;

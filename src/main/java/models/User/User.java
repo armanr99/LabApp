@@ -1,8 +1,8 @@
 package main.java.models.User;
 
-import main.java.models.Storage.ContainerEntity;
+import main.java.models.General.Entity;
 
-public class User extends ContainerEntity {
+public class User extends Entity {
     private String name;
     private String email;
     private String password;

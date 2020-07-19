@@ -1,10 +1,12 @@
 package main.java.models.Storage;
 
 
+import main.java.models.General.Entity;
+
 import java.io.InvalidObjectException;
 import java.util.*;
 
-public abstract class EntityContainer<T extends ContainerEntity> {
+public abstract class EntityContainer<T extends Entity> {
     private HashMap<Integer, T> records;
     private int nextId;
 
