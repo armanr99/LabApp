@@ -65,4 +65,8 @@ public class UserExperimentRecord extends ExperimentRecord {
     protected Lab getLab() {
         return lab;
     }
+
+    protected Sampler getSampler() {
+        return sampler;
+    }
 }
