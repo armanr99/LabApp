@@ -4,6 +4,7 @@ public class Storage {
     private static Storage instance;
     private LabRepository labRepository;
     private PatientRepository patientRepository;
+    private SamplerRepository samplerRepository;
     private ExperimentInfoRepository experimentInfoRepository;
     private ExperimentRecordRepository experimentRecordRepository;
 
@@ -17,6 +18,7 @@ public class Storage {
     public Storage() {
         labRepository = new LabRepository();
         patientRepository = new PatientRepository();
+        samplerRepository = new SamplerRepository();
         experimentInfoRepository = new ExperimentInfoRepository();
         experimentRecordRepository = new ExperimentRecordRepository();
     }
@@ -35,5 +37,9 @@ public class Storage {
 
     public ExperimentRecordRepository getExperimentRecordRepository() {
         return experimentRecordRepository;
+    }
+
+    public SamplerRepository getSamplerRepository() {
+        return samplerRepository;
     }
 }
