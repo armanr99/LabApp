@@ -13,25 +13,29 @@ public interface RequestExperimentControllerInterface {
 
     List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLoginException;
 
-    void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFoundException, PatientNotLoginException,
-            CurrentExperimentNotInstantiatedException, InvalidObjectException;
+    void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws
+            PatientNotLoginException,
+            InvalidObjectException;
 
     List<LabDTO> getExperimentLabs() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, LabNotFoundException, CurrentExperimentNotInstantiatedException;
+    void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    List<Date> getExperimentTimes() throws LabNotFoundException, NoLabAssignedException, PatientNotLoginException,
+    List<Date> getExperimentTimes() throws NoLabAssignedException, PatientNotLoginException,
             CurrentExperimentNotInstantiatedException;
 
-    void setExperimentTime(Date experimentTime) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
+    void setExperimentTime(Date experimentTime) throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException;
 
     void setExperimentInsurance(int insuranceNumber) throws PatientNotLoginException, InvalidInsuranceNumberException,
             CurrentExperimentNotInstantiatedException;
 
     double getExperimentTotalPrice() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
-            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException;
+    void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException,
+            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException,
+            NoLabAssignedException, InvalidObjectException;
 
     void logoutPatient();
 }

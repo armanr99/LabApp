@@ -52,7 +52,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labDTOMapper.getLabDTOs(labs);
     }
 
-    public void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, LabNotFoundException,
+    public void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException,
             CurrentExperimentNotInstantiatedException {
         Lab lab = labDTOMapper.getLab(labDTO);
         labApp.setExperimentLab(lab);

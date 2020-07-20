@@ -1,6 +1,7 @@
 package main.java.views.CommandLineHandler;
 
 import main.java.controllers.RequestExperiment.RequestExperimentController;
+import main.java.controllers.RequestExperiment.RequestExperimentControllerInterface;
 import main.java.exceptions.*;
 import main.java.models.DTO.ExperimentInfoDTO;
 import main.java.models.DTO.LabDTO;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 
 public class CommandLineHandler {
     private Scanner scanner;
-    private RequestExperimentController requestExperimentController;
+    private RequestExperimentControllerInterface requestExperimentController;
 
     public CommandLineHandler() throws InvalidObjectException {
         scanner = new Scanner(System.in);
@@ -49,8 +50,9 @@ public class CommandLineHandler {
         requestExperimentController.loginPatient(patientId, password);
     }
 
-    private void handleExperimentRequest() throws NoExperimentsException, NoLabsException, LabNotFoundException,
-            PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException
+    private void handleExperimentRequest() throws NoExperimentsException, NoLabsException,
+            PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException,
+            SamplerNotAssignedException, NoLabAssignedException
             , InvalidObjectException, NoTimeException {
         handleSelectExperiments();
         handleSelectLab();
@@ -59,13 +61,15 @@ public class CommandLineHandler {
         handlePay();
     }
 
-    private void handleSelectExperiments() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoExperimentsException,
+    private void handleSelectExperiments() throws PatientNotLoginException,
+            NoExperimentsException,
             InvalidObjectException {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperimentInfos(selectedExperiments);
     }
 
-    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperimentsException, PatientNotLoginException {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperimentsException,
+            PatientNotLoginException {
         List<ExperimentInfoDTO> experimentInfos = requestExperimentController.getExperimentInfos();
         if (experimentInfos.isEmpty()) {
             throw new NoExperimentsException();
@@ -104,12 +108,14 @@ public class CommandLineHandler {
         return selectedExperimentInfos;
     }
 
-    private void handleSelectLab() throws PatientNotLoginException, NoLabsException, CurrentExperimentNotInstantiatedException, LabNotFoundException {
+    private void handleSelectLab() throws PatientNotLoginException, NoLabsException,
+            CurrentExperimentNotInstantiatedException {
         LabDTO selectedLab = getSelectedLab();
         requestExperimentController.setExperimentLab(selectedLab);
     }
 
-    private LabDTO getSelectedLab() throws NoLabsException, PatientNotLoginException, CurrentExperimentNotInstantiatedException {
+    private LabDTO getSelectedLab() throws NoLabsException, PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException {
         List<LabDTO> experimentsLabDTOs = requestExperimentController.getExperimentLabs();
         if (experimentsLabDTOs.isEmpty()) {
             throw new NoLabsException();
@@ -155,7 +161,8 @@ public class CommandLineHandler {
         }
     }
 
-    private void handleSelectTime() throws NoLabAssignedException, PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoTimeException {
+    private void handleSelectTime() throws NoLabAssignedException, PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException, NoTimeException {
         Date selectedTime = getExperimentTime();
         requestExperimentController.setExperimentTime(selectedTime);
     }
@@ -249,7 +256,8 @@ public class CommandLineHandler {
         requestExperimentController.setExperimentInsurance(insuranceNumber);
     }
 
-    private void handlePay() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException,
+    private void handlePay() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
+            SamplerNotAvailableException,
             SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
         double totalPrice = requestExperimentController.getExperimentTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
@@ -257,7 +265,8 @@ public class CommandLineHandler {
         handlePayInput();
     }
 
-    private void handlePayInput() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException,
+    private void handlePayInput() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
+            SamplerNotAvailableException,
             SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
         System.out.print("Please enter your bank user session id: ");
         String bandSessionId = scanner.nextLine();
