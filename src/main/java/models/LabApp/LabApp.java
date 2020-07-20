@@ -67,12 +67,6 @@ public class LabApp {
         }
     }
 
-    public void createNewExperiment() throws PatientNotLoginException, InvalidObjectException {
-        checkPatientLogin();
-        currentPatientExperimentRecord = new PatientExperimentRecord();
-        storage.getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
-    }
-
     public List<ExperimentInfo> getExperimentInfos() throws PatientNotLoginException {
         checkPatientLogin();
         return storage.getExperimentInfoRepository().getRecords();
@@ -82,6 +76,12 @@ public class LabApp {
             InvalidObjectException {
         createNewExperiment();
         currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
+    }
+
+    private void createNewExperiment() throws PatientNotLoginException, InvalidObjectException {
+        checkPatientLogin();
+        currentPatientExperimentRecord = new PatientExperimentRecord();
+        storage.getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
 
     public List<Lab> getExperimentLabs() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
@@ -137,7 +137,14 @@ public class LabApp {
 
     public double getExperimentTotalPrice() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
         checkExperimentOperationsPrerequisites();
-        return currentPatientExperimentRecord.getTotalPrice();
+        double totalPrice = currentPatientExperimentRecord.getPureTotalPrice();
+
+        if (currentPatientExperimentRecord.hasInsurance()) {
+            int insuranceNumber = currentPatientExperimentRecord.getInsuranceNumber();
+            totalPrice = getPriceWithInsurance(totalPrice, insuranceNumber);
+        }
+
+        return totalPrice;
     }
 
     public void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException,
@@ -149,10 +156,17 @@ public class LabApp {
         finalizeCurrentExperiment();
     }
 
-    public void payCurrentExperiment(String bankSessionId) throws UnsuccessfulPaymentException {
-        double totalPrice = currentPatientExperimentRecord.getTotalPrice();
+    public void payCurrentExperiment(String bankSessionId) throws UnsuccessfulPaymentException,
+            CurrentExperimentNotInstantiatedException, PatientNotLoginException {
+        checkExperimentOperationsPrerequisites();
+        double totalPrice = getExperimentTotalPrice();
         Payment payment = bankAPI.pay(bankSessionId, totalPrice);
         currentPatientExperimentRecord.setPayment(payment);
+    }
+
+    private double getPriceWithInsurance(double price, int insuranceNumber) {
+        double insurancePercentage = insuranceAPI.getInsurancePercentage(insuranceNumber);
+        return Double.max(0, price - (price * insurancePercentage));
     }
 
     private void finalizeCurrentExperiment() throws NoLabAssignedException, SamplerNotAvailableException,

@@ -42,7 +42,7 @@ public class RequestExperimentController implements RequestExperimentControllerI
     }
 
     public void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws PatientNotLoginException,
-            CurrentExperimentNotInstantiatedException, InvalidObjectException {
+            InvalidObjectException {
         List<ExperimentInfo> experimentInfos = experimentInfoDTOMapper.getExperimentInfos(experimentInfoDTOs);
         labApp.setExperimentInfos(experimentInfos);
     }
@@ -52,20 +52,24 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labDTOMapper.getLabDTOs(labs);
     }
 
-    public void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, LabNotFoundException, CurrentExperimentNotInstantiatedException {
+    public void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, LabNotFoundException,
+            CurrentExperimentNotInstantiatedException {
         Lab lab = labDTOMapper.getLab(labDTO);
         labApp.setExperimentLab(lab);
     }
 
-    public List<Date> getExperimentTimes() throws NoLabAssignedException, PatientNotLoginException, CurrentExperimentNotInstantiatedException {
+    public List<Date> getExperimentTimes() throws NoLabAssignedException, PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException {
         return labApp.getExperimentTimes();
     }
 
-    public void setExperimentTime(Date experimentTime) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
+    public void setExperimentTime(Date experimentTime) throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException {
         labApp.setExperimentTime(experimentTime);
     }
 
-    public void setExperimentInsurance(int insuranceNumber) throws PatientNotLoginException, InvalidInsuranceNumberException,
+    public void setExperimentInsurance(int insuranceNumber) throws PatientNotLoginException,
+            InvalidInsuranceNumberException,
             CurrentExperimentNotInstantiatedException {
         labApp.setExperimentInsurance(insuranceNumber);
     }
@@ -74,8 +78,10 @@ public class RequestExperimentController implements RequestExperimentControllerI
         return labApp.getExperimentTotalPrice();
     }
 
-    public void payExperimentTotalPrice(String bandSessionId) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
-            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
+    public void payExperimentTotalPrice(String bandSessionId) throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException,
+            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException,
+            NoLabAssignedException, InvalidObjectException {
         labApp.payExperimentTotalPrice(bandSessionId);
     }
 

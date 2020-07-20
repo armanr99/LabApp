@@ -2,7 +2,6 @@ package main.java.models.Experiment;
 
 import main.java.exceptions.NoLabAssignedException;
 import main.java.exceptions.SamplerNotAssignedException;
-import main.java.models.API.InsuranceAPI;
 import main.java.models.General.Payment;
 import main.java.models.Lab.Lab;
 import main.java.models.User.Sampler;
@@ -45,21 +44,7 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.sampler = sampler;
     }
 
-    public double getTotalPrice() {
-        if (payment != null) {
-            return payment.getTotalPrice();
-        } else {
-            return getCalculatedPrice();
-        }
-    }
-
-    private double getCalculatedPrice() {
-        double totalPrice = getPurePrice();
-        totalPrice = getPriceWithInsurance(totalPrice);
-        return totalPrice;
-    }
-
-    private double getPurePrice() {
+    public double getPureTotalPrice() {
         double totalPrice = 0;
 
         for (ExperimentInfo experimentInfo : experimentRecordInfo.getExperimentInfos()) {
@@ -68,16 +53,12 @@ public class PatientExperimentRecord extends ExperimentRecord {
         return totalPrice;
     }
 
-    private double getPriceWithInsurance(double totalPrice) {
-        if (hasInsurance()) {
-            double insurancePercentage = InsuranceAPI.getInstance().getInsurancePercentage(insuranceNumber);
-            totalPrice = Double.max(0, totalPrice - (totalPrice * insurancePercentage));
-        }
-        return totalPrice;
+    public boolean hasInsurance() {
+        return (insuranceNumber != Integer.MAX_VALUE);
     }
 
-    private boolean hasInsurance() {
-        return (insuranceNumber != Integer.MAX_VALUE);
+    public int getInsuranceNumber() {
+        return insuranceNumber;
     }
 
     public Lab getLab() throws NoLabAssignedException {
