@@ -74,12 +74,12 @@ public class LabApp {
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws PatientNotLoginException,
             InvalidObjectException {
+        checkPatientLogin();
         createNewExperiment();
         currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
     }
 
     private void createNewExperiment() throws PatientNotLoginException, InvalidObjectException {
-        checkPatientLogin();
         currentPatientExperimentRecord = new PatientExperimentRecord();
         storage.getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
