@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExperimentInfoDTOMapper {
+    private Storage storage;
+
+    public ExperimentInfoDTOMapper() {
+        storage = Storage.getInstance();
+    }
+
     public ExperimentInfo getExperimentInfo(ExperimentInfoDTO experimentInfoDTO) {
-        return Storage.getInstance().getExperimentInfoRepository().find(experimentInfoDTO.getId());
+        return storage.getExperimentInfoRepository().find(experimentInfoDTO.getId());
     }
 
     public List<ExperimentInfo> getExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) {

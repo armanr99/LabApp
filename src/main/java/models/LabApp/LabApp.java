@@ -23,7 +23,8 @@ public class LabApp {
     private Patient currentPatient;
     private PatientExperimentRecord currentPatientExperimentRecord;
     private Storage storage;
-    private ObjectsInitializer objectsInitializer;
+    private BankAPI bankAPI;
+    private InsuranceAPI insuranceAPI;
 
     public static LabApp getInstance() throws InvalidObjectException {
         if (instance == null) {
@@ -34,8 +35,9 @@ public class LabApp {
 
     private LabApp() throws InvalidObjectException {
         storage = Storage.getInstance();
-        objectsInitializer = new ObjectsInitializer();
-        objectsInitializer.initialize();
+        bankAPI = BankAPI.getInstance();
+        insuranceAPI = InsuranceAPI.getInstance();
+        ObjectsInitializer.getInstance().initialize();
     }
 
     public void loginPatient(int patientId, String password) throws PatientNotFoundException {
@@ -68,7 +70,7 @@ public class LabApp {
     public void createNewExperiment() throws PatientNotLoginException, InvalidObjectException {
         checkPatientLogin();
         currentPatientExperimentRecord = new PatientExperimentRecord();
-        Storage.getInstance().getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
+        storage.getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
 
     public List<ExperimentInfo> getExperimentInfos() throws PatientNotLoginException {
@@ -128,8 +130,9 @@ public class LabApp {
     }
 
     private void validateInsuranceNumber(int insuranceNumber) throws InvalidInsuranceNumberException {
-        if (!InsuranceAPI.getInstance().isValidInsuranceNumber(insuranceNumber))
+        if (!insuranceAPI.isValidInsuranceNumber(insuranceNumber)) {
             throw new InvalidInsuranceNumberException();
+        }
     }
 
     public double getExperimentTotalPrice() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
@@ -148,7 +151,7 @@ public class LabApp {
 
     public void payCurrentExperiment(String bankSessionId) throws UnsuccessfulPaymentException {
         double totalPrice = currentPatientExperimentRecord.getTotalPrice();
-        Payment payment = BankAPI.getInstance().pay(bankSessionId, totalPrice);
+        Payment payment = bankAPI.pay(bankSessionId, totalPrice);
         currentPatientExperimentRecord.setPayment(payment);
     }
 

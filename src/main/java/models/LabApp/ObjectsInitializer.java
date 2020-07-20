@@ -11,10 +11,18 @@ import java.io.InvalidObjectException;
 import java.util.ArrayList;
 
 public class ObjectsInitializer {
+    private static ObjectsInitializer instance;
     private Storage storage;
 
-    public ObjectsInitializer() {
-        this.storage = Storage.getInstance();
+    static ObjectsInitializer getInstance() {
+        if (instance == null) {
+            instance = new ObjectsInitializer();
+        }
+        return instance;
+    }
+
+    private ObjectsInitializer() {
+        storage = Storage.getInstance();
     }
 
     public void initialize() throws InvalidObjectException {

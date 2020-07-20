@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LabDTOMapper {
+    private Storage storage;
+
+    public LabDTOMapper() {
+        storage = Storage.getInstance();
+    }
+
     public Lab getLab(LabDTO labDTO) {
-        return Storage.getInstance().getLabRepository().find(labDTO.getId());
+        return storage.getLabRepository().find(labDTO.getId());
     }
 
     public LabDTO getLabDTO(Lab lab) {
