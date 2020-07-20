@@ -2,29 +2,18 @@ package main.java.models.Experiment;
 
 import main.java.models.Entity.Entity;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public abstract class ExperimentRecord extends Entity {
-    protected Date date;
-    protected List<ExperimentInfo> experimentInfos;
+    protected ExperimentRecordInfo experimentRecordInfo;
 
     public ExperimentRecord() {
-        super();
-        experimentInfos = new ArrayList<>();
+        experimentRecordInfo = new ExperimentRecordInfo();
     }
 
-    public ExperimentRecord(Date date, List<ExperimentInfo> experimentInfos) {
-        this.date = date;
-        this.experimentInfos = experimentInfos;
+    public ExperimentRecord(ExperimentRecordInfo experimentRecordInfo) {
+        this.experimentRecordInfo = experimentRecordInfo;
     }
 
-    public void setTime(Date date) {
-        this.date = date;
-    }
-
-    public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
-        this.experimentInfos = experimentInfos;
+    public ExperimentRecordInfo getExperimentRecordInfo() {
+        return experimentRecordInfo;
     }
 }

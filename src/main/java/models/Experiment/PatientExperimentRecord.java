@@ -23,11 +23,20 @@ public class PatientExperimentRecord extends ExperimentRecord {
     private Payment payment;
 
     public PatientExperimentRecord() {
+        super();
         this.insuranceNumber = Integer.MAX_VALUE;
+    }
+
+    public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
+        this.experimentRecordInfo.setExperimentInfos(experimentInfos);
     }
 
     public void setLab(Lab lab) {
         this.lab = lab;
+    }
+
+    public void setTime(Date date) {
+        experimentRecordInfo.setTime(date);
     }
 
     public void setInsuranceNumber(int insuranceNumber) {
@@ -43,7 +52,7 @@ public class PatientExperimentRecord extends ExperimentRecord {
     private double getPurePrice() {
         double totalPrice = 0;
 
-        for (ExperimentInfo experimentInfo : experimentInfos) {
+        for (ExperimentInfo experimentInfo : experimentRecordInfo.getExperimentInfos()) {
             totalPrice += experimentInfo.getPrice();
         }
         return totalPrice;
@@ -75,10 +84,11 @@ public class PatientExperimentRecord extends ExperimentRecord {
     }
 
     public void assignSampler() throws SamplerNotAvailableException {
-        this.sampler = lab.getSampler(experimentInfos);
+        this.sampler = lab.getSampler(experimentRecordInfo.getExperimentInfos());
     }
 
-    public void informSampler(Patient patient) throws SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
+    public void informSampler(Patient patient) throws SamplerNotAssignedException, NoLabAssignedException,
+            InvalidObjectException {
         checkLabAssigned();
         checkSamplerAssigned();
         SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, this);
@@ -92,7 +102,8 @@ public class PatientExperimentRecord extends ExperimentRecord {
         }
     }
 
-    public void informLab(Patient patient) throws NoLabAssignedException, SamplerNotAssignedException, InvalidObjectException {
+    public void informLab(Patient patient) throws NoLabAssignedException, SamplerNotAssignedException,
+            InvalidObjectException {
         checkLabAssigned();
         checkSamplerAssigned();
         LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, this);
@@ -107,11 +118,11 @@ public class PatientExperimentRecord extends ExperimentRecord {
     }
 
     public List<ExperimentInfo> getExperimentInfos() {
-        return experimentInfos;
+        return experimentRecordInfo.getExperimentInfos();
     }
 
     public List<Date> getExperimentTimes() throws NoLabAssignedException {
         checkLabAssigned();
-        return lab.getTimes(experimentInfos);
+        return lab.getTimes(experimentRecordInfo.getExperimentInfos());
     }
 }

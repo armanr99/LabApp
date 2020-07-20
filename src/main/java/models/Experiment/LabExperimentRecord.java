@@ -9,7 +9,7 @@ public class LabExperimentRecord extends ExperimentRecord {
     private int patientExperimentRecordId;
 
     public LabExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
-        super(patientExperimentRecord.date, patientExperimentRecord.experimentInfos);
+        super(patientExperimentRecord.getExperimentRecordInfo());
         this.patient = patient;
         this.sampler = patientExperimentRecord.getSampler();
         this.patientExperimentRecordId = patientExperimentRecord.getId();
