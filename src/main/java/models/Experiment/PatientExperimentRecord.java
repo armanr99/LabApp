@@ -2,17 +2,11 @@ package main.java.models.Experiment;
 
 import main.java.exceptions.NoLabAssignedException;
 import main.java.exceptions.SamplerNotAssignedException;
-import main.java.exceptions.SamplerNotAvailableException;
-import main.java.exceptions.UnsuccessfulPaymentException;
-import main.java.models.API.BankAPI;
 import main.java.models.API.InsuranceAPI;
 import main.java.models.General.Payment;
 import main.java.models.Lab.Lab;
-import main.java.models.Storage.Storage;
-import main.java.models.User.Patient;
 import main.java.models.User.Sampler;
 
-import java.io.InvalidObjectException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +37,23 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.insuranceNumber = insuranceNumber;
     }
 
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public void setSampler(Sampler sampler) {
+        this.sampler = sampler;
+    }
+
     public double getTotalPrice() {
+        if (payment != null) {
+            return payment.getTotalPrice();
+        } else {
+            return getCalculatedPrice();
+        }
+    }
+
+    private double getCalculatedPrice() {
         double totalPrice = getPurePrice();
         totalPrice = getPriceWithInsurance(totalPrice);
         return totalPrice;
@@ -70,45 +80,9 @@ public class PatientExperimentRecord extends ExperimentRecord {
         return (insuranceNumber != Integer.MAX_VALUE);
     }
 
-    public void payTotalPrice(String bankSessionId) throws UnsuccessfulPaymentException {
-        double totalPrice = getTotalPrice();
-        payment = BankAPI.getInstance().pay(bankSessionId, totalPrice);
-    }
-
-    protected Lab getLab() {
+    public Lab getLab() throws NoLabAssignedException {
+        checkLabAssigned();
         return lab;
-    }
-
-    protected Sampler getSampler() {
-        return sampler;
-    }
-
-    public void assignSampler() throws SamplerNotAvailableException {
-        this.sampler = lab.getSampler(experimentRecordInfo.getExperimentInfos());
-    }
-
-    public void informSampler(Patient patient) throws SamplerNotAssignedException, NoLabAssignedException,
-            InvalidObjectException {
-        checkLabAssigned();
-        checkSamplerAssigned();
-        SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(patient, this);
-        Storage.getInstance().getSamplerExperimentRecordRepository().insert(samplerExperimentRecord);
-        sampler.addExperimentRecord(samplerExperimentRecord);
-    }
-
-    private void checkSamplerAssigned() throws SamplerNotAssignedException {
-        if (sampler == null) {
-            throw new SamplerNotAssignedException();
-        }
-    }
-
-    public void informLab(Patient patient) throws NoLabAssignedException, SamplerNotAssignedException,
-            InvalidObjectException {
-        checkLabAssigned();
-        checkSamplerAssigned();
-        LabExperimentRecord labExperimentRecord = new LabExperimentRecord(patient, this);
-        Storage.getInstance().getLabExperimentRecordRepository().insert(labExperimentRecord);
-        lab.addExperimentRecord(labExperimentRecord);
     }
 
     private void checkLabAssigned() throws NoLabAssignedException {
@@ -117,12 +91,18 @@ public class PatientExperimentRecord extends ExperimentRecord {
         }
     }
 
-    public List<ExperimentInfo> getExperimentInfos() {
-        return experimentRecordInfo.getExperimentInfos();
+    protected Sampler getSampler() throws SamplerNotAssignedException {
+        checkSamplerAssigned();
+        return sampler;
     }
 
-    public List<Date> getExperimentTimes() throws NoLabAssignedException {
-        checkLabAssigned();
-        return lab.getTimes(experimentRecordInfo.getExperimentInfos());
+    private void checkSamplerAssigned() throws SamplerNotAssignedException {
+        if (sampler == null) {
+            throw new SamplerNotAssignedException();
+        }
+    }
+
+    public List<ExperimentInfo> getExperimentInfos() {
+        return experimentRecordInfo.getExperimentInfos();
     }
 }

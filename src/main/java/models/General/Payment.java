@@ -8,4 +8,8 @@ public class Payment {
         this.totalPrice = totalPrice;
         this.verificationCode = verificationCode;
     }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 }

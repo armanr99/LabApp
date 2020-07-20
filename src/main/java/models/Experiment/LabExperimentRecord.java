@@ -1,5 +1,6 @@
 package main.java.models.Experiment;
 
+import main.java.exceptions.SamplerNotAssignedException;
 import main.java.models.User.Patient;
 import main.java.models.User.Sampler;
 
@@ -8,7 +9,7 @@ public class LabExperimentRecord extends ExperimentRecord {
     private Sampler sampler;
     private int patientExperimentRecordId;
 
-    public LabExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) {
+    public LabExperimentRecord(Patient patient, PatientExperimentRecord patientExperimentRecord) throws SamplerNotAssignedException {
         super(patientExperimentRecord.getExperimentRecordInfo());
         this.patient = patient;
         this.sampler = patientExperimentRecord.getSampler();

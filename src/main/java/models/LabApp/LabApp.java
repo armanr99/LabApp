@@ -1,11 +1,17 @@
 package main.java.models.LabApp;
 
 import main.java.exceptions.*;
+import main.java.models.API.BankAPI;
 import main.java.models.API.InsuranceAPI;
 import main.java.models.Experiment.ExperimentInfo;
+import main.java.models.Experiment.LabExperimentRecord;
+import main.java.models.Experiment.PatientExperimentRecord;
+import main.java.models.Experiment.SamplerExperimentRecord;
+import main.java.models.General.Payment;
 import main.java.models.Lab.Lab;
 import main.java.models.Storage.Storage;
 import main.java.models.User.Patient;
+import main.java.models.User.Sampler;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
@@ -15,6 +21,7 @@ import java.util.List;
 public class LabApp {
     private static LabApp instance;
     private Patient currentPatient;
+    private PatientExperimentRecord currentPatientExperimentRecord;
     private Storage storage;
     private ObjectsInitializer objectsInitializer;
 
@@ -40,14 +47,28 @@ public class LabApp {
         }
     }
 
-    public void checkPatientLogin() throws PatientNotLoginException {
-        if (currentPatient == null)
+    private void checkExperimentOperationsPrerequisites() throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException {
+        checkPatientLogin();
+        checkExperimentInstantiated();
+    }
+
+    private void checkPatientLogin() throws PatientNotLoginException {
+        if (currentPatient == null) {
             throw new PatientNotLoginException();
+        }
+    }
+
+    private void checkExperimentInstantiated() throws CurrentExperimentNotInstantiatedException {
+        if (currentPatientExperimentRecord == null) {
+            throw new CurrentExperimentNotInstantiatedException();
+        }
     }
 
     public void createNewExperiment() throws PatientNotLoginException, InvalidObjectException {
         checkPatientLogin();
-        currentPatient.createNewExperimentRecord();
+        currentPatientExperimentRecord = new PatientExperimentRecord();
+        Storage.getInstance().getPatientExperimentRecordRepository().insert(currentPatientExperimentRecord);
     }
 
     public List<ExperimentInfo> getExperimentInfos() throws PatientNotLoginException {
@@ -56,15 +77,18 @@ public class LabApp {
     }
 
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) throws PatientNotLoginException,
-            CurrentExperimentNotInstantiatedException, InvalidObjectException {
+            InvalidObjectException {
         createNewExperiment();
-        currentPatient.setExperimentInfos(experimentInfos);
+        currentPatientExperimentRecord.setExperimentInfos(experimentInfos);
     }
 
     public List<Lab> getExperimentLabs() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
-        checkPatientLogin();
+        checkExperimentOperationsPrerequisites();
+        List<ExperimentInfo> experimentInfos = currentPatientExperimentRecord.getExperimentInfos();
+        return getLabsWithSupport(experimentInfos);
+    }
 
-        List<ExperimentInfo> experimentInfos = currentPatient.getExperimentInfos();
+    private List<Lab> getLabsWithSupport(List<ExperimentInfo> experimentInfos) {
         List<Lab> experimentsLabs = new ArrayList<>();
 
         for (Lab lab : storage.getLabRepository().getRecords()) {
@@ -77,25 +101,30 @@ public class LabApp {
     }
 
     public void setExperimentLab(Lab lab) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
-        checkPatientLogin();
-        currentPatient.setExperimentLab(lab);
+        checkExperimentOperationsPrerequisites();
+        currentPatientExperimentRecord.setLab(lab);
     }
 
-    public List<Date> getExperimentTimes() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoLabAssignedException {
-        checkPatientLogin();
-        return currentPatient.getExperimentTimes();
+    public List<Date> getExperimentTimes() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException
+            , NoLabAssignedException {
+        checkExperimentOperationsPrerequisites();
+        Lab lab = currentPatientExperimentRecord.getLab();
+        List<ExperimentInfo> experimentInfos = currentPatientExperimentRecord.getExperimentInfos();
+        return lab.getTimes(experimentInfos);
     }
 
-    public void setExperimentTime(Date experimentTime) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
-        checkPatientLogin();
-        currentPatient.setExperimentTime(experimentTime);
-    }
-
-    public void setExperimentInsurance(int insuranceNumber) throws InvalidInsuranceNumberException, PatientNotLoginException,
+    public void setExperimentTime(Date experimentTime) throws PatientNotLoginException,
             CurrentExperimentNotInstantiatedException {
-        checkPatientLogin();
+        checkExperimentOperationsPrerequisites();
+        currentPatientExperimentRecord.setTime(experimentTime);
+    }
+
+    public void setExperimentInsurance(int insuranceNumber) throws InvalidInsuranceNumberException,
+            PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException {
+        checkExperimentOperationsPrerequisites();
         validateInsuranceNumber(insuranceNumber);
-        currentPatient.setExperimentInsuranceNumber(insuranceNumber);
+        currentPatientExperimentRecord.setInsuranceNumber(insuranceNumber);
     }
 
     private void validateInsuranceNumber(int insuranceNumber) throws InvalidInsuranceNumberException {
@@ -104,18 +133,56 @@ public class LabApp {
     }
 
     public double getExperimentTotalPrice() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
-        checkPatientLogin();
-        return currentPatient.getExperimentTotalPrice();
+        checkExperimentOperationsPrerequisites();
+        return currentPatientExperimentRecord.getTotalPrice();
     }
 
-    public void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
-            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
-        checkPatientLogin();
-        currentPatient.payTotalPrice(bankSessionId);
-        currentPatient.finalizeCurrentExperiment();
+    public void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException,
+            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException,
+            NoLabAssignedException, InvalidObjectException {
+        checkExperimentOperationsPrerequisites();
+        payCurrentExperiment(bankSessionId);
+        finalizeCurrentExperiment();
+    }
+
+    public void payCurrentExperiment(String bankSessionId) throws UnsuccessfulPaymentException {
+        double totalPrice = currentPatientExperimentRecord.getTotalPrice();
+        Payment payment = BankAPI.getInstance().pay(bankSessionId, totalPrice);
+        currentPatientExperimentRecord.setPayment(payment);
+    }
+
+    private void finalizeCurrentExperiment() throws NoLabAssignedException, SamplerNotAvailableException,
+            InvalidObjectException, SamplerNotAssignedException {
+        Lab lab = currentPatientExperimentRecord.getLab();
+        List<ExperimentInfo> experimentInfos = currentPatientExperimentRecord.getExperimentInfos();
+
+        Sampler sampler = lab.getSampler(experimentInfos);
+        currentPatientExperimentRecord.setSampler(sampler);
+
+        informSampler(sampler);
+        informLab(lab);
+
+        currentPatient.addExperimentRecord(currentPatientExperimentRecord);
+        currentPatientExperimentRecord = null;
+    }
+
+    private void informSampler(Sampler sampler) throws InvalidObjectException, NoLabAssignedException {
+        SamplerExperimentRecord samplerExperimentRecord = new SamplerExperimentRecord(currentPatient,
+                currentPatientExperimentRecord);
+        storage.getSamplerExperimentRecordRepository().insert(samplerExperimentRecord);
+        sampler.addExperimentRecord(samplerExperimentRecord);
+    }
+
+    private void informLab(Lab lab) throws InvalidObjectException, SamplerNotAssignedException {
+        LabExperimentRecord labExperimentRecord = new LabExperimentRecord(currentPatient,
+                currentPatientExperimentRecord);
+        storage.getLabExperimentRecordRepository().insert(labExperimentRecord);
+        lab.addExperimentRecord(labExperimentRecord);
     }
 
     public void logoutPatient() {
         currentPatient = null;
+        currentPatientExperimentRecord = null;
     }
 }
