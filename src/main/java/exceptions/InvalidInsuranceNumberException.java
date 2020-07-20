@@ -1,6 +1,6 @@
 package main.java.exceptions;
 
-public class InvalidInsuranceNumber extends Exception {
+public class InvalidInsuranceNumberException extends Exception {
     public String toString() {
         return "Entered insurance number is invalid";
     }

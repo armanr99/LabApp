@@ -9,29 +9,29 @@ import java.util.Date;
 import java.util.List;
 
 public interface RequestExperimentControllerInterface {
-    void loginPatient(int patientId, String password) throws PatientNotFound;
+    void loginPatient(int patientId, String password) throws PatientNotFoundException;
 
-    List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLogin;
+    List<ExperimentInfoDTO> getExperimentInfos() throws PatientNotLoginException;
 
-    void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFound, PatientNotLogin,
-            CurrentExperimentNotInstantiated, InvalidObjectException;
+    void setExperimentInfos(List<ExperimentInfoDTO> experimentInfoDTOs) throws ExperimentInfoNotFoundException, PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException, InvalidObjectException;
 
-    List<LabDTO> getExperimentLabs() throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    List<LabDTO> getExperimentLabs() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    void setExperimentLab(LabDTO labDTO) throws PatientNotLogin, LabNotFound, CurrentExperimentNotInstantiated;
+    void setExperimentLab(LabDTO labDTO) throws PatientNotLoginException, LabNotFoundException, CurrentExperimentNotInstantiatedException;
 
-    List<Date> getExperimentTimes() throws LabNotFound, NoLabAssigned, PatientNotLogin,
-            CurrentExperimentNotInstantiated;
+    List<Date> getExperimentTimes() throws LabNotFoundException, NoLabAssignedException, PatientNotLoginException,
+            CurrentExperimentNotInstantiatedException;
 
-    void setExperimentTime(Date experimentTime) throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    void setExperimentTime(Date experimentTime) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    void setExperimentInsurance(int insuranceNumber) throws PatientNotLogin, InvalidInsuranceNumber,
-            CurrentExperimentNotInstantiated;
+    void setExperimentInsurance(int insuranceNumber) throws PatientNotLoginException, InvalidInsuranceNumberException,
+            CurrentExperimentNotInstantiatedException;
 
-    double getExperimentTotalPrice() throws PatientNotLogin, CurrentExperimentNotInstantiated;
+    double getExperimentTotalPrice() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException;
 
-    void payExperimentTotalPrice(String bankSessionId) throws PatientNotLogin, CurrentExperimentNotInstantiated,
-            UnsuccessfulPayment, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned, InvalidObjectException;
+    void payExperimentTotalPrice(String bankSessionId) throws PatientNotLoginException, CurrentExperimentNotInstantiatedException,
+            UnsuccessfulPaymentException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException;
 
     void logoutPatient();
 }

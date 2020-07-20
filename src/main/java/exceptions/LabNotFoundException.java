@@ -1,9 +1,9 @@
 package main.java.exceptions;
 
-public class LabNotFound extends Exception {
+public class LabNotFoundException extends Exception {
     private String labName;
 
-    public LabNotFound(String labName) {
+    public LabNotFoundException(String labName) {
         this.labName = labName;
     }
 

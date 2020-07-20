@@ -1,9 +1,9 @@
 package main.java.exceptions;
 
-public class PatientNotFound extends Exception {
+public class PatientNotFoundException extends Exception {
     private int patientId;
 
-    public PatientNotFound(int patientId) {
+    public PatientNotFoundException(int patientId) {
         this.patientId = patientId;
     }
 

@@ -36,7 +36,7 @@ public class CommandLineHandler {
         }
     }
 
-    private void handleLoginPatient() throws PatientNotFound, WrongIntegerFormat {
+    private void handleLoginPatient() throws PatientNotFoundException, WrongIntegerFormatException {
         System.out.print("Please enter your id: ");
 
         String patientIdStr = scanner.nextLine();
@@ -49,9 +49,9 @@ public class CommandLineHandler {
         requestExperimentController.loginPatient(patientId, password);
     }
 
-    private void handleExperimentRequest() throws NoExperiments, NoLabs, LabNotFound,
-            PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable, SamplerNotAssigned, NoLabAssigned
-            , InvalidObjectException, NoTime {
+    private void handleExperimentRequest() throws NoExperimentsException, NoLabsException, LabNotFoundException,
+            PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException, SamplerNotAssignedException, NoLabAssignedException
+            , InvalidObjectException, NoTimeException {
         handleSelectExperiments();
         handleSelectLab();
         handleSelectTime();
@@ -59,16 +59,16 @@ public class CommandLineHandler {
         handlePay();
     }
 
-    private void handleSelectExperiments() throws PatientNotLogin, CurrentExperimentNotInstantiated, NoExperiments,
+    private void handleSelectExperiments() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoExperimentsException,
             InvalidObjectException {
         List<ExperimentInfoDTO> selectedExperiments = getSelectedExperimentInfos();
         requestExperimentController.setExperimentInfos(selectedExperiments);
     }
 
-    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperiments, PatientNotLogin {
+    private List<ExperimentInfoDTO> getSelectedExperimentInfos() throws NoExperimentsException, PatientNotLoginException {
         List<ExperimentInfoDTO> experimentInfos = requestExperimentController.getExperimentInfos();
         if (experimentInfos.isEmpty()) {
-            throw new NoExperiments();
+            throw new NoExperimentsException();
         }
         printExperimentInfos(experimentInfos);
 
@@ -96,7 +96,7 @@ public class CommandLineHandler {
                 validateIndex(experimentIndex, experimentInfos);
                 selectedExperimentInfos.add(experimentInfos.get(experimentIndex));
             }
-        } catch (WrongIntegerFormat | WrongIndex exception) {
+        } catch (WrongIntegerFormatException | WrongIndexException exception) {
             System.out.println(exception.toString());
             return getSelectedExperimentInfosInput(experimentInfos);
         }
@@ -104,15 +104,15 @@ public class CommandLineHandler {
         return selectedExperimentInfos;
     }
 
-    private void handleSelectLab() throws PatientNotLogin, NoLabs, CurrentExperimentNotInstantiated, LabNotFound {
+    private void handleSelectLab() throws PatientNotLoginException, NoLabsException, CurrentExperimentNotInstantiatedException, LabNotFoundException {
         LabDTO selectedLab = getSelectedLab();
         requestExperimentController.setExperimentLab(selectedLab);
     }
 
-    private LabDTO getSelectedLab() throws NoLabs, PatientNotLogin, CurrentExperimentNotInstantiated {
+    private LabDTO getSelectedLab() throws NoLabsException, PatientNotLoginException, CurrentExperimentNotInstantiatedException {
         List<LabDTO> experimentsLabDTOs = requestExperimentController.getExperimentLabs();
         if (experimentsLabDTOs.isEmpty()) {
-            throw new NoLabs();
+            throw new NoLabsException();
         }
         printLabInfos(experimentsLabDTOs);
 
@@ -134,7 +134,7 @@ public class CommandLineHandler {
 
         try {
             labDTO = (LabDTO) getListIndexInput(labDTOs);
-        } catch (WrongIndex | WrongIntegerFormat exception) {
+        } catch (WrongIndexException | WrongIntegerFormatException exception) {
             System.out.println(exception.toString());
             return getSelectedLabInput(labDTOs);
         }
@@ -142,29 +142,29 @@ public class CommandLineHandler {
         return labDTO;
     }
 
-    private void validateIndex(int objectIndex, List<?> objects) throws WrongIndex {
+    private void validateIndex(int objectIndex, List<?> objects) throws WrongIndexException {
         if (objectIndex < 0 || objectIndex >= objects.size())
-            throw new WrongIndex();
+            throw new WrongIndexException();
     }
 
-    private void validateIntegerStr(String integerStr) throws WrongIntegerFormat {
+    private void validateIntegerStr(String integerStr) throws WrongIntegerFormatException {
         try {
             Integer.parseInt(integerStr);
         } catch (NumberFormatException exception) {
-            throw new WrongIntegerFormat();
+            throw new WrongIntegerFormatException();
         }
     }
 
-    private void handleSelectTime() throws NoLabAssigned, PatientNotLogin, CurrentExperimentNotInstantiated, NoTime {
+    private void handleSelectTime() throws NoLabAssignedException, PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoTimeException {
         Date selectedTime = getExperimentTime();
         requestExperimentController.setExperimentTime(selectedTime);
     }
 
-    private Date getExperimentTime() throws NoLabAssigned,
-            PatientNotLogin, CurrentExperimentNotInstantiated, NoTime {
+    private Date getExperimentTime() throws NoLabAssignedException,
+            PatientNotLoginException, CurrentExperimentNotInstantiatedException, NoTimeException {
         List<Date> experimentTimes = requestExperimentController.getExperimentTimes();
         if (experimentTimes.isEmpty()) {
-            throw new NoTime();
+            throw new NoTimeException();
         }
         printExperimentTimes(experimentTimes);
 
@@ -186,7 +186,7 @@ public class CommandLineHandler {
 
         try {
             selectedDate = (Date) getListIndexInput(experimentTimes);
-        } catch (WrongIntegerFormat | WrongIndex exception) {
+        } catch (WrongIntegerFormatException | WrongIndexException exception) {
             System.out.println(exception.toString());
             return getSelectedTimeInput(experimentTimes);
         }
@@ -194,25 +194,25 @@ public class CommandLineHandler {
         return selectedDate;
     }
 
-    public Object getListIndexInput(List<?> indexObjects) throws WrongIndex, WrongIntegerFormat {
+    public Object getListIndexInput(List<?> indexObjects) throws WrongIndexException, WrongIntegerFormatException {
         int indexInteger = getIntegerInput();
         validateIndex(indexInteger, indexObjects);
         return indexObjects.get(indexInteger);
     }
 
-    public int getIntegerInput() throws WrongIntegerFormat {
+    public int getIntegerInput() throws WrongIntegerFormatException {
         String inputStr = scanner.nextLine();
         validateIntegerStr(inputStr);
         return Integer.parseInt(inputStr);
     }
 
-    private void handleInsurance() throws PatientNotLogin, CurrentExperimentNotInstantiated {
+    private void handleInsurance() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException {
         System.out.print("Do you want to use insurance? y/n: ");
         String answerInput = scanner.nextLine();
 
         try {
             validateQuestionInputStr(answerInput);
-        } catch (WrongQuestionInputFormat exception) {
+        } catch (WrongQuestionInputFormatException exception) {
             System.out.println(exception.toString());
             handleInsurance();
             return;
@@ -221,26 +221,26 @@ public class CommandLineHandler {
         if (answerInput.equals("y")) {
             try {
                 handleInsuranceCode();
-            } catch (InvalidInsuranceNumber exception) {
+            } catch (InvalidInsuranceNumberException exception) {
                 System.out.println(exception.toString());
                 handleInsurance();
             }
         }
     }
 
-    private void validateQuestionInputStr(String inputStr) throws WrongQuestionInputFormat {
+    private void validateQuestionInputStr(String inputStr) throws WrongQuestionInputFormatException {
         if (!inputStr.equals("y") && !inputStr.equals("n"))
-            throw new WrongQuestionInputFormat();
+            throw new WrongQuestionInputFormatException();
     }
 
-    private void handleInsuranceCode() throws PatientNotLogin, InvalidInsuranceNumber,
-            CurrentExperimentNotInstantiated {
+    private void handleInsuranceCode() throws PatientNotLoginException, InvalidInsuranceNumberException,
+            CurrentExperimentNotInstantiatedException {
         System.out.print("Please enter your insurance code: ");
         int insuranceNumber;
 
         try {
             insuranceNumber = getIntegerInput();
-        } catch (WrongIntegerFormat exception) {
+        } catch (WrongIntegerFormatException exception) {
             System.out.println(exception.toString());
             handleInsuranceCode();
             return;
@@ -249,22 +249,22 @@ public class CommandLineHandler {
         requestExperimentController.setExperimentInsurance(insuranceNumber);
     }
 
-    private void handlePay() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
-            SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
+    private void handlePay() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException,
+            SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
         double totalPrice = requestExperimentController.getExperimentTotalPrice();
         System.out.println(String.format("Your total price is: %f", totalPrice));
 
         handlePayInput();
     }
 
-    private void handlePayInput() throws PatientNotLogin, CurrentExperimentNotInstantiated, SamplerNotAvailable,
-            SamplerNotAssigned, NoLabAssigned, InvalidObjectException {
+    private void handlePayInput() throws PatientNotLoginException, CurrentExperimentNotInstantiatedException, SamplerNotAvailableException,
+            SamplerNotAssignedException, NoLabAssignedException, InvalidObjectException {
         System.out.print("Please enter your bank user session id: ");
         String bandSessionId = scanner.nextLine();
 
         try {
             requestExperimentController.payExperimentTotalPrice(bandSessionId);
-        } catch (UnsuccessfulPayment exception) {
+        } catch (UnsuccessfulPaymentException exception) {
             System.out.println(exception.toString());
             handlePay();
             return;

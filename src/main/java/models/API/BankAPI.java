@@ -1,6 +1,6 @@
 package main.java.models.API;
 
-import main.java.exceptions.UnsuccessfulPayment;
+import main.java.exceptions.UnsuccessfulPaymentException;
 import main.java.models.General.Payment;
 
 import java.util.Random;
@@ -15,13 +15,13 @@ public class BankAPI {
         return instance;
     }
 
-    public Payment pay(String sessionId, double totalPrice) throws UnsuccessfulPayment {
+    public Payment pay(String sessionId, double totalPrice) throws UnsuccessfulPaymentException {
         boolean isSuccessfulPay = (Math.random() > 0.1);
 
         if (isSuccessfulPay) {
             return new Payment(totalPrice, getRandomString());
         } else {
-            throw new UnsuccessfulPayment();
+            throw new UnsuccessfulPaymentException();
         }
     }
 

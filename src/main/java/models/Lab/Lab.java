@@ -1,6 +1,6 @@
 package main.java.models.Lab;
 
-import main.java.exceptions.SamplerNotAvailable;
+import main.java.exceptions.SamplerNotAvailableException;
 import main.java.models.Experiment.ExperimentInfo;
 import main.java.models.Experiment.LabExperimentRecord;
 import main.java.models.General.Address;
@@ -76,9 +76,9 @@ public class Lab extends Entity {
         return dates;
     }
 
-    public Sampler getSampler(List<ExperimentInfo> experimentInfos) throws SamplerNotAvailable {
+    public Sampler getSampler(List<ExperimentInfo> experimentInfos) throws SamplerNotAvailableException {
         if (samplers.isEmpty()) {
-            throw new SamplerNotAvailable();
+            throw new SamplerNotAvailableException();
         } else {
             int samplerIndex = (int) (Math.random() * samplers.size());
             return samplers.get(samplerIndex);
