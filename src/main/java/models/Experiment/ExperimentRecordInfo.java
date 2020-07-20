@@ -7,14 +7,11 @@ import java.util.List;
 public class ExperimentRecordInfo {
     private Date date;
     private List<ExperimentInfo> experimentInfos;
+    ExperimentStatus experimentStatus;
 
-    public ExperimentRecordInfo() {
-        experimentInfos = new ArrayList<>();
-    }
-
-    public ExperimentRecordInfo(Date date, List<ExperimentInfo> experimentInfos) {
-        this.date = date;
-        this.experimentInfos = experimentInfos;
+    public ExperimentRecordInfo(ExperimentStatus experimentStatus) {
+        this.experimentStatus = experimentStatus;
+        this.experimentInfos = new ArrayList<>();
     }
 
     public void setTime(Date date) {
@@ -27,5 +24,9 @@ public class ExperimentRecordInfo {
 
     public List<ExperimentInfo> getExperimentInfos() {
         return experimentInfos;
+    }
+
+    public void setStatus(ExperimentStatus experimentStatus) {
+        this.experimentStatus = experimentStatus;
     }
 }
