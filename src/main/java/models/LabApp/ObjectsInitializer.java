@@ -18,10 +18,15 @@ public class ObjectsInitializer {
     }
 
     public void initialize() throws InvalidObjectException {
-        addPatients();
-        addLabs();
-        addExperimentInfos();
-        addSamplers();
+        try {
+            addPatients();
+            addLabs();
+            addExperimentInfos();
+            addSamplers();
+        } catch (InvalidObjectException exception) {
+            System.out.println("Error in objects initialization");
+            throw exception;
+        }
     }
 
     private void addPatients() throws InvalidObjectException {
