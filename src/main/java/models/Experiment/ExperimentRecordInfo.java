@@ -18,15 +18,15 @@ public class ExperimentRecordInfo {
         this.date = date;
     }
 
+    public void setStatus(ExperimentStatus experimentStatus) {
+        this.experimentStatus = experimentStatus;
+    }
+
     public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
         this.experimentInfos = experimentInfos;
     }
 
     public List<ExperimentInfo> getExperimentInfos() {
         return experimentInfos;
-    }
-
-    public void setStatus(ExperimentStatus experimentStatus) {
-        this.experimentStatus = experimentStatus;
     }
 }

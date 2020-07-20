@@ -13,11 +13,11 @@ public abstract class ExperimentRecord extends Entity {
         this.experimentRecordInfo = experimentRecordInfo;
     }
 
-    public ExperimentRecordInfo getExperimentRecordInfo() {
-        return experimentRecordInfo;
-    }
-
     public void setStatus(ExperimentStatus experimentStatus) {
         experimentRecordInfo.setStatus(experimentStatus);
+    }
+
+    public ExperimentRecordInfo getExperimentRecordInfo() {
+        return experimentRecordInfo;
     }
 }

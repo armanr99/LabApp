@@ -13,15 +13,15 @@ public class LabDTO {
         this.fullAddress = lab.getFullAddress();
     }
 
+    public int getId() {
+        return id;
+    }
+    
     public String getName() {
         return name;
     }
 
     public String getFullAddress() {
         return fullAddress;
-    }
-
-    public int getId() {
-        return id;
     }
 }

@@ -20,16 +20,12 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.insuranceNumber = Integer.MAX_VALUE;
     }
 
-    public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
-        this.experimentRecordInfo.setExperimentInfos(experimentInfos);
-    }
-
     public void setLab(Lab lab) {
         this.lab = lab;
     }
 
-    public void setTime(Date date) {
-        experimentRecordInfo.setTime(date);
+    public void setSampler(Sampler sampler) {
+        this.sampler = sampler;
     }
 
     public void setInsuranceNumber(int insuranceNumber) {
@@ -40,8 +36,30 @@ public class PatientExperimentRecord extends ExperimentRecord {
         this.payment = payment;
     }
 
-    public void setSampler(Sampler sampler) {
-        this.sampler = sampler;
+    public void setExperimentInfos(List<ExperimentInfo> experimentInfos) {
+        this.experimentRecordInfo.setExperimentInfos(experimentInfos);
+    }
+
+    public void setTime(Date date) {
+        experimentRecordInfo.setTime(date);
+    }
+
+    public Lab getLab() throws NoLabAssignedException {
+        checkLabAssigned();
+        return lab;
+    }
+
+    protected Sampler getSampler() throws SamplerNotAssignedException {
+        checkSamplerAssigned();
+        return sampler;
+    }
+
+    public int getInsuranceNumber() {
+        return insuranceNumber;
+    }
+
+    public List<ExperimentInfo> getExperimentInfos() {
+        return experimentRecordInfo.getExperimentInfos();
     }
 
     public double getPureTotalPrice() {
@@ -57,33 +75,15 @@ public class PatientExperimentRecord extends ExperimentRecord {
         return (insuranceNumber != Integer.MAX_VALUE);
     }
 
-    public int getInsuranceNumber() {
-        return insuranceNumber;
-    }
-
-    public Lab getLab() throws NoLabAssignedException {
-        checkLabAssigned();
-        return lab;
-    }
-
     private void checkLabAssigned() throws NoLabAssignedException {
         if (lab == null) {
             throw new NoLabAssignedException();
         }
     }
 
-    protected Sampler getSampler() throws SamplerNotAssignedException {
-        checkSamplerAssigned();
-        return sampler;
-    }
-
     private void checkSamplerAssigned() throws SamplerNotAssignedException {
         if (sampler == null) {
             throw new SamplerNotAssignedException();
         }
-    }
-
-    public List<ExperimentInfo> getExperimentInfos() {
-        return experimentRecordInfo.getExperimentInfos();
     }
 }
