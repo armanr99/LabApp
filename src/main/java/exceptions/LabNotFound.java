@@ -8,6 +8,6 @@ public class LabNotFound extends Exception {
     }
 
     public String toString() {
-        return String.format("Lab with name %s was not found");
+        return String.format("Lab with name %s was not found", labName);
     }
 }
